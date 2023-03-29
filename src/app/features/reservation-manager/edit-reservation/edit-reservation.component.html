@@ -1,0 +1,72 @@
+<h1 mat-dialog-title>Editar servicio</h1>
+<div mat-dialog-content>
+  <div class="w-full flex justify-center">
+    <div class="flex flex-col max-w-[432px] w-full">
+      <app-error-msg
+        *ngIf="!(loading$ | async) && (error$ | async) as error"
+        [error]="error"
+      >
+      </app-error-msg>
+
+      <app-loading-bar *ngIf="loading$ | async"></app-loading-bar>
+      <form
+        class="grid grid-cols-1 gap-1"
+        [formGroup]="formGroup"
+        (ngSubmit)="submit()"
+      >
+        <mat-form-field>
+          <mat-label>Nombre</mat-label>
+          <input type="text" matInput formControlName="name" />
+          <mat-error *ngIf="formGroup.get('name')!.getError('required')">
+            <span class="ml-[9px]">Nombre is required</span>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Descripcion</mat-label>
+          <textarea matInput formControlName="description"></textarea>
+          <mat-error *ngIf="formGroup.get('description')!.getError('required')">
+            <span class="ml-[9px]">Descripcion is required</span>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Orden Minima</mat-label>
+          <input type="text" matInput formControlName="minOrder" />
+          <mat-error *ngIf="formGroup.get('minOrder')!.getError('required')">
+            <span class="ml-[9px]">Orden Minima is required</span>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Orden Maxima</mat-label>
+          <input type="text" matInput formControlName="maxOrder" />
+          <mat-error *ngIf="formGroup.get('maxOrder')!.getError('required')">
+            <span class="ml-[9px]">Orden Maxima is required</span>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Velocidad</mat-label>
+          <input type="text" matInput formControlName="speed" />
+          <mat-error *ngIf="formGroup.get('speed')!.getError('required')">
+            <span class="ml-[9px]">Velocidad is required</span>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Precio</mat-label>
+          <input type="text" matInput formControlName="price" />
+          <mat-error *ngIf="formGroup.get('price')!.getError('required')">
+            <span class="ml-[9px]">Precio is required</span>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-checkbox formControlName="available">Disponible</mat-checkbox>
+      </form>
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <div class="flex flex-row justify-end w-full gap-3">
+    <button mat-stroked-button color="primary" mat-dialog-close>Cerrar</button>
+    <button mat-stroked-button color="primary" (click)="submit()">
+      Adicionar
+    </button>
+  </div>
+</div>

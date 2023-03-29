@@ -1,0 +1,67 @@
+<div class="w-full flex justify-center">
+  <div class="flex flex-col max-w-[432px] w-full">
+    <h1 class="p-6 font-extrabold">Log in</h1>
+    <app-basic-card class="w-full">
+      <div class="w-full flex justify-start">
+        <h4 class="font-bold text-lg">Create an account</h4>
+      </div>
+      <app-error-msg
+        *ngIf="!(loading$ | async) && (error$ | async) as error"
+        [error]="error"
+      >
+      </app-error-msg>
+
+      <app-loading-bar *ngIf="loading$ | async"></app-loading-bar>
+      <form
+        class="grid grid-cols-1 gap-[16px]"
+        [formGroup]="formGroup"
+        (ngSubmit)="submit()"
+      >
+        <mat-form-field>
+          <mat-label>Email</mat-label>
+          <input type="text" matInput formControlName="email" />
+          <mat-error *ngIf="formGroup.get('email')!.getError('required')">
+            <span class="ml-[9px]">Email is required</span>
+          </mat-error>
+          <mat-error *ngIf="formGroup.get('email')!.getError('email')">
+            <span class="ml-[9px]">Email is incorrect</span>
+          </mat-error>
+        </mat-form-field>
+        <span class="w-full flex flex-col justify-end">
+          <mat-form-field>
+            <mat-label>Password</mat-label>
+            <input
+              matInput
+              [type]="hidePassword ? 'password' : 'text'"
+              formControlName="password"
+            />
+            <mat-error *ngIf="formGroup.get('password')!.getError('required')">
+              <span class="ml-[9px]">Password is required</span>
+            </mat-error>
+          </mat-form-field>
+        </span>
+        <button
+          mat-flat-button
+          type="submit"
+          class="h-10 w-full mt-2"
+          color="primary"
+          [disabled]="loading$ | async"
+        >
+          Log In
+        </button>
+      </form>
+    </app-basic-card>
+    <div class="my-6 w-full flex flex-row justify-center">
+      <h4 class="font-extrabold text-base tracking-wide">
+        Don't have an account?
+      </h4>
+      <a [routerLink]="'/auth/register'"
+        ><h4
+          class="font-extrabold text-base tracking-wide mx-3 text-primary-500"
+        >
+          Sign Up
+        </h4></a
+      >
+    </div>
+  </div>
+</div>

@@ -1,0 +1,10 @@
+<button
+  mat-flat-button
+  type="submit"
+  class="h-10 w-full mt-2"
+  color="primary"
+  *ngIf="logedIn$ | async"
+  (click)="logOut()"
+>
+  Log Out
+</button>

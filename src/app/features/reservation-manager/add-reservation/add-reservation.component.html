@@ -1,0 +1,103 @@
+<h1 mat-dialog-title>Agregar servicio</h1>
+<div mat-dialog-content>
+  <div class="w-full flex justify-center">
+    <div class="flex flex-col w-full">
+      <app-error-msg
+        *ngIf="!(loading$ | async) && (error$ | async) as error"
+        [error]="error"
+      >
+      </app-error-msg>
+
+      <app-loading-bar *ngIf="loading$ | async"></app-loading-bar>
+      <div class="flex lg:flex-row flex-col gap-3">
+        <form
+          class="flex flex-col gap-1 lg:w-[300px] w-full"
+          [formGroup]="formGroup"
+          (ngSubmit)="submit()"
+        >
+          <mat-form-field>
+            <mat-label>Fecha de entrada y salida</mat-label>
+            <mat-date-range-input [rangePicker]="picker">
+              <input
+                matStartDate
+                placeholder="Fecha de entrada"
+                formControlName="dateIn"
+              />
+              <input
+                matEndDate
+                placeholder="Fecha de salida"
+                formControlName="dateOut"
+              />
+            </mat-date-range-input>
+            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle
+              matIconSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+            <mat-error *ngIf="formGroup.get('dateIn')!.getError('required')">
+              <span class="ml-[9px]">Fecha de entrada es requerido</span>
+            </mat-error>
+            <mat-error *ngIf="formGroup.get('dateOut')!.getError('required')">
+              <span class="ml-[9px]">Fecha de salida es requerido</span>
+            </mat-error>
+          </mat-form-field>
+
+          <div class="flex flex-row gap-3 w-full">
+            <mat-form-field>
+              <mat-label>Hora de llegada</mat-label>
+              <input type="time" matInput formControlName="timeIn" />
+              <mat-error *ngIf="formGroup.get('timeIn')!.getError('required')">
+                <span class="ml-[9px]">Hora de llegada es requerido</span>
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Hora de salida</mat-label>
+              <input type="time" matInput formControlName="timeOut" />
+            </mat-form-field>
+          </div>
+
+          <mat-form-field>
+            <mat-label>Noches pagadas</mat-label>
+            <input type="text" matInput formControlName="paidNights" />
+            <mat-error
+              *ngIf="formGroup.get('paidNights')!.getError('required')"
+            >
+              <span class="ml-[9px]">Noches pagadas es requerido</span>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Observacion</mat-label>
+            <textarea matInput formControlName="description"></textarea>
+          </mat-form-field>
+
+          <mat-checkbox formControlName="isCharged"
+            >Cobrar reserva ahora</mat-checkbox
+          >
+        </form>
+        <app-add-reservation-clients
+          (event)="clients = $event"
+          class="lg:w-[900px] md:w-[700px]"
+        ></app-add-reservation-clients>
+      </div>
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <div class="flex flex-row justify-between w-full px-5">
+    <div class="flex w-full">
+      <p class="text-red-500" *ngIf="error">{{ errorMessage }}</p>
+    </div>
+
+    <div class="flex justify-end w-full gap-3">
+      <button mat-stroked-button color="primary" mat-dialog-close>
+        Cerrar
+      </button>
+      <button mat-stroked-button color="primary" (click)="submit()">
+        Adicionar
+      </button>
+    </div>
+  </div>
+</div>

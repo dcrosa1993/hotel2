@@ -1,0 +1,86 @@
+<div class="flex flex-col w-full py-3 gap-3">
+  <div
+    class="flex flex-row justify-start"
+    *ngIf="!(loading$ | async) && !(error$ | async)"
+  >
+    <button mat-stroked-button color="primary" (click)="editDialog()">
+      Editar Configuracion
+    </button>
+  </div>
+  <app-error-msg
+    *ngIf="!(loading$ | async) && (error$ | async) as error"
+    [error]="error"
+  >
+  </app-error-msg>
+
+  <app-loading-bar *ngIf="loading$ | async"></app-loading-bar>
+
+  <div
+    class="flex flex-row justify-center w-full"
+    *ngIf="success$ | async as data; else nodata"
+  >
+    <div class="flex flex-col w-full max-w-[600px] px-3 py-2 gap-4">
+      <div class="flex flex-row gap-3">
+        <h3>Noches Adelantadas Requeridas: {{ data.advanceRequieredNigth }}</h3>
+      </div>
+      <div class="flex flex-row gap-3">
+        <h3>
+          Costo para reservas de 2 clientes o menos:
+          {{ data.nigthCostUnder2Client }}
+        </h3>
+      </div>
+
+      <div class="flex flex-row gap-3">
+        <h3>
+          Costo para reservas de 3 clientes: {{ data.nigthCostFor3Client }}
+        </h3>
+      </div>
+
+      <div class="flex flex-row gap-3">
+        <h3>
+          Costo para reservas de 4 clientes o mas:
+          {{ data.nigthCostMost4Client }}
+        </h3>
+      </div>
+
+      <div class="flex flex-row gap-3">
+        <h3>
+          Descuento para reservas de 2 clientes o menos:
+          {{ data.nigthDiscountUnder2Client }} %
+        </h3>
+      </div>
+
+      <div class="flex flex-row gap-3">
+        <h3>
+          Descuento para reservas de 3 clientes:
+          {{ data.nigthDiscountFor3Client }} %
+        </h3>
+      </div>
+
+      <div class="flex flex-row gap-3">
+        <h3>
+          Descuento para reservas de 4 clientes o mas:
+          {{ data.nigthDiscountMost4Client }} %
+        </h3>
+      </div>
+
+      <h3>Maximo de clientes por habiacion: {{ data.maxRoomClients }}</h3>
+      <h3>Costo de transportacion: {{ data.transportCost }}</h3>
+      <h3>Parte de los gestores: {{ data.managerPartPerClient }}</h3>
+    </div>
+  </div>
+
+  <ng-template #nodata><h3>No hay resultados para mostrar</h3></ng-template>
+</div>
+<!--
+  advanceRequieredNigth: string;
+  nigthCostUnder2Client: string;
+  nigthCostFor3Client: string;
+  nigthCostMost4Client: string;
+  nigthDiscountUnder2Client: string;
+  nigthDiscountFor3Client: string;
+  nigthDiscountMost4Client: string;
+  maxRoomClients: string;
+  transportCost: string;
+  managerPartPerClient: string;
+-->

@@ -1,0 +1,28 @@
+<h1 mat-dialog-title>Editar servicio</h1>
+<div mat-dialog-content>
+  <div class="w-full flex justify-center">
+    <div class="flex flex-col max-w-[432px] w-full">
+      <app-error-msg
+        *ngIf="!(loading$ | async) && (error$ | async) as error"
+        [error]="error"
+      >
+      </app-error-msg>
+
+      <app-loading-bar *ngIf="loading$ | async"></app-loading-bar>
+      <div class="grid grid-cols-1 gap-1" *ngIf="success$ | async as data">
+        <h3>Nombre: {{ data.name }}</h3>
+        <h3>Telefono: {{ data.phone }}</h3>
+        <h3>Email {{ data.email }}</h3>
+        <h3>Rol: {{ data.role }}</h3>
+        <h3>
+          Baneado: {{ data.baned ? "Si" : "No" }}
+        </h3>
+      </div>
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <div class="flex flex-row justify-end w-full gap-3">
+    <button mat-stroked-button color="primary" mat-dialog-close>Cerrar</button>
+  </div>
+</div>

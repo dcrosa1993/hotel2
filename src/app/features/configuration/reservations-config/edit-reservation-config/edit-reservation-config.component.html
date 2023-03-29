@@ -1,0 +1,146 @@
+<h1 mat-dialog-title>Editar servicio</h1>
+<div mat-dialog-content>
+  <div class="w-full flex justify-center">
+    <div class="flex flex-col max-w-[432px] w-full">
+      <app-error-msg
+        *ngIf="!(loading$ | async) && (error$ | async) as error"
+        [error]="error"
+      >
+      </app-error-msg>
+
+      <app-loading-bar *ngIf="loading$ | async"></app-loading-bar>
+      <form
+        class="grid grid-cols-1 gap-1"
+        [formGroup]="formGroup"
+        (ngSubmit)="submit()"
+      >
+        <mat-form-field>
+          <mat-label>Noches Adelantadas Requeridas</mat-label>
+          <input type="text" matInput formControlName="advanceRequieredNigth" />
+          <mat-error
+            *ngIf="formGroup.get('advanceRequieredNigth')!.getError('required')"
+          >
+            <span class="ml-[9px]">Noches Adelantadas Requeridas</span>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Maximo de clientes por habiacion</mat-label>
+          <input type="text" matInput formControlName="maxRoomClients" />
+          <mat-error
+            *ngIf="formGroup.get('maxRoomClients')!.getError('required')"
+          >
+            <span class="ml-[9px]">Maximo de clientes por habiacion</span>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Costo para reservas de 2 clientes o menos</mat-label>
+          <input type="text" matInput formControlName="managerPartPerClient" />
+          <mat-error
+            *ngIf="formGroup.get('managerPartPerClient')!.getError('required')"
+          >
+            <span class="ml-[9px]"
+              >Costo para reservas de 2 clientes o menos</span
+            >
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Costo para reservas de 3 clientes</mat-label>
+          <input type="text" matInput formControlName="nigthCostFor3Client" />
+          <mat-error
+            *ngIf="formGroup.get('nigthCostFor3Client')!.getError('required')"
+          >
+            <span class="ml-[9px]">Costo para reservas de 3 clientes</span>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Costo para reservas de 4 clientes o mas</mat-label>
+          <input type="text" matInput formControlName="nigthCostMost4Client" />
+          <mat-error
+            *ngIf="formGroup.get('nigthCostMost4Client')!.getError('required')"
+          >
+            <span class="ml-[9px]"
+              >Costo para reservas de 4 clientes o mas</span
+            >
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Descuento para reservas de 2 clientes o menos</mat-label>
+          <input type="text" matInput formControlName="nigthCostUnder2Client" />
+          <mat-error
+            *ngIf="formGroup.get('nigthCostUnder2Client')!.getError('required')"
+          >
+            <span class="ml-[9px]"
+              >Descuento para reservas de 2 clientes o menos</span
+            >
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Descuento para reservas de 3 clientes</mat-label>
+          <input
+            type="text"
+            matInput
+            formControlName="nigthDiscountFor3Client"
+          />
+          <mat-error
+            *ngIf="
+              formGroup.get('nigthDiscountFor3Client')!.getError('required')
+            "
+          >
+            <span class="ml-[9px]">Descuento para reservas de 3 clientes</span>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Descuento para reservas de 4 clientes o mas</mat-label>
+          <input
+            type="text"
+            matInput
+            formControlName="nigthDiscountMost4Client"
+          />
+          <mat-error
+            *ngIf="
+              formGroup.get('nigthDiscountMost4Client')!.getError('required')
+            "
+          >
+            <span class="ml-[9px]"
+              >Descuento para reservas de 4 clientes o mas</span
+            >
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Descuento para reservas de 2 clientes o menos</mat-label>
+          <input
+            type="text"
+            matInput
+            formControlName="nigthDiscountUnder2Client"
+          />
+          <mat-error
+            *ngIf="
+              formGroup.get('nigthDiscountUnder2Client')!.getError('required')
+            "
+          >
+            <span class="ml-[9px]"
+              >Descuento para reservas de 2 clientes o menos</span
+            >
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Costo de transportacion</mat-label>
+          <input type="text" matInput formControlName="transportCost" />
+          <mat-error
+            *ngIf="formGroup.get('transportCost')!.getError('required')"
+          >
+            <span class="ml-[9px]">Costo de transportacion</span>
+          </mat-error>
+        </mat-form-field>
+      </form>
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <div class="flex flex-row justify-end w-full gap-3">
+    <button mat-stroked-button color="primary" mat-dialog-close>Cerrar</button>
+    <button mat-stroked-button color="primary" (click)="submit()">
+      Adicionar
+    </button>
+  </div>
+</div>

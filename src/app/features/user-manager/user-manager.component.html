@@ -1,0 +1,90 @@
+<div class="flex flex-col w-full py-3 gap-3">
+  <app-error-msg
+    *ngIf="!(loading$ | async) && (error$ | async) as error"
+    [error]="error"
+  >
+  </app-error-msg>
+
+  <app-loading-bar *ngIf="loading$ | async"></app-loading-bar>
+  <div
+    class="flex flex-row justify-start"
+    *ngIf="!(loading$ | async) && !(error$ | async)"
+  >
+    <button mat-stroked-button color="primary" (click)="addDialog()">
+      Agregar Usuario
+    </button>
+  </div>
+  <div
+    class="flex flex-row justify-center w-full"
+    *ngIf="success$ | async as data; else nodata"
+  >
+    <table mat-table [dataSource]="data">
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Nombre</th>
+        <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+      </ng-container>
+      <ng-container matColumnDef="phone">
+        <th mat-header-cell *matHeaderCellDef>Telefono</th>
+        <td mat-cell *matCellDef="let element">{{ element.phone }}</td>
+      </ng-container>
+      <ng-container matColumnDef="role">
+        <th mat-header-cell *matHeaderCellDef>Rol</th>
+        <td mat-cell *matCellDef="let element">{{ element.role }}</td>
+      </ng-container>
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef>Email</th>
+        <td mat-cell *matCellDef="let element">{{ element.email }}</td>
+      </ng-container>
+      <ng-container matColumnDef="baned">
+        <th mat-header-cell *matHeaderCellDef>Baneado</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.baned ? "Si" : "No" }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="operations">
+        <th mat-header-cell *matHeaderCellDef>Operaciones</th>
+        <td mat-cell *matCellDef="let element">
+          <div class="flex flex-row items-center justify-center gap-1">
+            <button
+              mat-button
+              class="flex justify-center items-center"
+              (click)="viewDialog(element.id)"
+            >
+              <mat-icon
+                aria-hidden="false"
+                aria-label="Ver detalles"
+                fontIcon="visibility"
+                class="m-0"
+              ></mat-icon>
+            </button>
+            <button
+              mat-button
+              class="flex justify-center items-center"
+              (click)="editDialog(element.id)"
+            >
+              <mat-icon
+                aria-hidden="false"
+                aria-label="Editar"
+                fontIcon="edit"
+                class="m-0"
+              ></mat-icon>
+            </button>
+            <button mat-button class="flex justify-center items-center">
+              <mat-icon
+                aria-hidden="false"
+                aria-label="Eliminar"
+                fontIcon="delete"
+                class="m-0"
+              ></mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+  <ng-template #nodata><h3>No hay resultados para mostrar</h3></ng-template>
+</div>

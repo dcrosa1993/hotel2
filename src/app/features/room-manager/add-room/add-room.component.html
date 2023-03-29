@@ -1,0 +1,45 @@
+<h1 mat-dialog-title>Agregar servicio</h1>
+<div mat-dialog-content>
+  <div class="w-full flex justify-center">
+    <div class="flex flex-col max-w-[432px] w-full">
+      <app-error-msg
+        *ngIf="!(loading$ | async) && (error$ | async) as error"
+        [error]="error"
+      >
+      </app-error-msg>
+
+      <app-loading-bar *ngIf="loading$ | async"></app-loading-bar>
+      <form
+        class="grid grid-cols-1 gap-1"
+        [formGroup]="formGroup"
+        (ngSubmit)="submit()"
+      >
+        <mat-form-field>
+          <mat-label>Numero</mat-label>
+          <input type="text" matInput formControlName="number" />
+          <mat-error *ngIf="formGroup.get('number')!.getError('required')">
+            <span class="ml-[9px]">Numero es requeridp</span>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Capacidad</mat-label>
+          <input type="text" matInput formControlName="capacity" />
+          <mat-error *ngIf="formGroup.get('capacity')!.getError('required')">
+            <span class="ml-[9px]">Capacidad es requerido</span>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-checkbox formControlName="availability">Disponible</mat-checkbox>
+      </form>
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <div class="flex flex-row justify-end w-full gap-3">
+    <button mat-stroked-button color="primary" mat-dialog-close>Cerrar</button>
+    <button mat-stroked-button color="primary" (click)="submit()">
+      Adicionar
+    </button>
+  </div>
+</div>
