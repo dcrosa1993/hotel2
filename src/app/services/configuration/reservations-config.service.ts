@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ReservationConfig } from 'src/app/models/configuration/reservation-config';
 import { Result } from 'src/app/models/exports';
-import { map, Observable } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { ReservationConfigInput } from 'src/app/models/configuration/reservation-config-input';
+import { configuration } from 'src/app/mock/moked-reservations-config';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +15,7 @@ export class ReservationsConfigService {
   private url: string = environment.url;
 
   getConfiguration(): Observable<Result<ReservationConfig>> {
+    /*
     const headers = new HttpHeaders();
     headers.set('Content-Type', 'application/json; charset=utf-8;');
     headers.append('Access-Control-Allow-Origin', '*');
@@ -28,10 +30,13 @@ export class ReservationsConfigService {
           }
         })
       );
+      */
+    return of({ result: configuration });
   }
   editConfiguration(
     data: ReservationConfigInput
   ): Observable<Result<ReservationConfig>> {
+    /*
     const headers = new HttpHeaders();
     headers.set('Content-Type', 'application/json; charset=utf-8;');
     headers.append('Access-Control-Allow-Origin', '*');
@@ -46,5 +51,7 @@ export class ReservationsConfigService {
           }
         })
       );
+      */
+    return of({ result: configuration });
   }
 }

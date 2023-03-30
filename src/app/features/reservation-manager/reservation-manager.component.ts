@@ -51,7 +51,11 @@ export class ReservationManagerComponent {
   ) {}
 
   ngOnInit(): void {
-    this.success$ = this._logic.success$;
+    this.success$ = this._logic.success$
+    this._logic.success$.subscribe((_)=>{
+      console.log(_);
+      
+    });
     this.error$ = this._logic.error$;
     this.loading$ = this._logic.loading$;
     this.getPetitions();

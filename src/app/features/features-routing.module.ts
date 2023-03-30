@@ -9,14 +9,15 @@ import { RoomManagerComponent } from './room-manager/room-manager.component';
 import { UserManagerComponent } from './user-manager/user-manager.component';
 
 const routes: Routes = [
+  { path: '', redirectTo: 'reservations', pathMatch: 'full' },
   {
     path: 'reservations',
-    data: { showMenu: false, showDemo: false },
+    data: { showMenu: false, showDemo: true },
     component: ReservationManagerComponent,
   },
   {
     path: 'config',
-    data: { showMenu: false, showDemo: false },
+    data: { showMenu: false, showDemo: true },
     children: [
       {
         path: 'reservation-configuration',
@@ -26,7 +27,7 @@ const routes: Routes = [
   },
   {
     path: 'auth',
-    data: { showMenu: false, showDemo: false },
+    data: { showMenu: false, showDemo: true },
     children: [
       {
         path: 'login',
@@ -40,7 +41,7 @@ const routes: Routes = [
   },
   {
     path: 'admin',
-    data: { showMenu: true, showDemo: false },
+    data: { showMenu: true, showDemo: true },
     children: [
       {
         path: 'users',

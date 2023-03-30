@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Reservation, Result } from 'src/app/models/exports';
 import { reservationInput } from 'src/app/models/reservation/reservation-input';
+import { reservation, reservations } from 'src/app/mock/moked-reservations';
 @Injectable({
   providedIn: 'root',
 })
@@ -12,6 +13,7 @@ export class ReservationService {
   private url: string = environment.url;
 
   getAllReservations(): Observable<Result<Reservation[]>> {
+    /*
     const headers = new HttpHeaders();
     headers.set('Content-Type', 'application/json; charset=utf-8;');
     headers.append('Access-Control-Allow-Origin', '*');
@@ -24,9 +26,12 @@ export class ReservationService {
         }
       })
     );
+    */
+   return of({result:reservations})
   }
 
   getOneReservation(id: string): Observable<Result<Reservation>> {
+    /*
     const headers = new HttpHeaders();
     headers.set('Content-Type', 'application/json; charset=utf-8;');
     headers.append('Access-Control-Allow-Origin', '*');
@@ -41,9 +46,12 @@ export class ReservationService {
           }
         })
       );
+      */
+      return of({result:reservation})
   }
 
   addReservation(res: reservationInput): Observable<Result<Reservation>> {
+    /*
     const headers = new HttpHeaders();
     headers.set('Content-Type', 'application/json; charset=utf-8;');
     headers.append('Access-Control-Allow-Origin', '*');
@@ -58,12 +66,15 @@ export class ReservationService {
           }
         })
       );
+      */
+      return of({result:reservation})
   }
 
   editReservation(res: {
     data: reservationInput;
     id: string;
   }): Observable<Result<Reservation>> {
+    /*
     const headers = new HttpHeaders();
     headers.set('Content-Type', 'application/json; charset=utf-8;');
     headers.append('Access-Control-Allow-Origin', '*');
@@ -78,5 +89,7 @@ export class ReservationService {
           }
         })
       );
+      */
+      return of({result:reservation})
   }
 }

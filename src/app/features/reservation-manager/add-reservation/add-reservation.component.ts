@@ -85,8 +85,9 @@ export class AddReservationComponent {
           dateOut: this.formGroup.value.dateOut,
           timeIn: this.formGroup.value.timeIn,
           timeOut: this.formGroup.value.timeOut,
-          paidNights: this.formGroup.value.paidNights,
+          paymentNights: this.formGroup.value.paidNights,
           clients: this.clients,
+          advanceManagement: this.formGroup.value.isCharged
         };
         this._logic.addReservation(newRes);
       } else {

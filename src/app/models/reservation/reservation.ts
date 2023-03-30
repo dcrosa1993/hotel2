@@ -1,20 +1,20 @@
 import { client, Room } from '../exports';
 
 export type Reservation = {
-  Id: string;
-  NoClients: string;
-  Description: string;
-  DateIn: string;
-  DateOut: string;
-  TotalCost: string;
-  Discount: string;
-  TotalNights: string;
-  PaymentNights: string;
-  Management: string;
-  Transport: string;
-  AdvanceManagement: string;
-  Room: Room;
-  Clients: client[];
+  id: string;
+  noClients: string;
+  description: string;
+  dateIn: string;
+  dateOut: string;
+  totalCost: string;
+  discount: string;
+  totalNights: string;
+  paymentNights: string;
+  management: string;
+  transport: string;
+  advanceManagement: boolean;
+  roomId: string;
+  clientsId: string[];
   createdBy: string;
   updatedBy: string;
   createDate: string;

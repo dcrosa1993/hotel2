@@ -21,10 +21,9 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 })
 export class LayoutComponent implements OnInit {
   protected showMenu: boolean = false;
-  protected showDemo: boolean = false;
+  protected showDemo: boolean = true;
   constructor(private _activatedRoute: ActivatedRoute) {}
   ngOnInit(): void {
-    this.showMenu = this._activatedRoute.snapshot.data['showMenu'];
-    this.showDemo = this._activatedRoute.snapshot.data['showDemo'];
+
   }
 }

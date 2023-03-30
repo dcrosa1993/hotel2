@@ -6,6 +6,7 @@ export type reservationInput = {
   dateOut: string;
   timeIn: string;
   timeOut: string;
-  paidNights: string;
+  paymentNights: string;
   clients: clientInput[];
+  advanceManagement: boolean;
 };
