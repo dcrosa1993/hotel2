@@ -14,16 +14,17 @@ import { Result } from 'src/app/models/exports';
 import { User } from 'src/app/models/user/user';
 import { UserInput } from 'src/app/models/user/user-input';
 
+import { AccountService } from '../account-service/account.service';
 import { LoggingService } from '../logging/loggin.service';
 import { UserServiceService } from './user-service.service';
 
 @Injectable()
-export class EditUserService {
+export class RemoveUserService {
   public error$: Observable<string | undefined>;
-  public success$: Observable<User | undefined>;
+  public success$: Observable<boolean | undefined>;
   public loading$: Observable<boolean>;
-  public result$: Observable<Result<User>>;
-  private submit$: Subject<{ data: UserInput; id: string }> = new Subject();
+  public result$: Observable<Result<boolean>>;
+  private submit$: Subject<string> = new Subject();
   private email!: string;
 
   constructor(
@@ -32,7 +33,7 @@ export class EditUserService {
     private _router: Router
   ) {
     this.result$ = this.submit$.pipe(
-      exhaustMap((data) => this.service.editUser(data)),
+      exhaustMap((data) => this.service.deleteUser(data)),
       shareReplay(1)
     );
     const [success$, error$] = partition(this.result$, (value) =>
@@ -73,7 +74,7 @@ export class EditUserService {
   /** This method begins the registration process of a new committee user
   @param value: SignUpCredials type object, contains the necessary registration data to register a new committee user
   */
-  editService(value: UserInput, id: string) {
-    this.submit$.next({ data: value, id: id });
+  deleteUser(value: string) {
+    this.submit$.next(value);
   }
 }

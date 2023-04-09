@@ -4,7 +4,6 @@ import { map, Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
-import { user, users } from 'src/app/mock/moked-user';
 import { User } from 'src/app/models/user/user';
 import { Result, Room } from 'src/app/models/exports';
 import { UserInput } from 'src/app/models/user/user-input';

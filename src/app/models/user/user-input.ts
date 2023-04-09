@@ -4,4 +4,6 @@ export type UserInput = {
   name: string;
   email: string;
   baned: boolean;
+  role: 'admin' | 'manager';
+  changePassword: boolean;
 };

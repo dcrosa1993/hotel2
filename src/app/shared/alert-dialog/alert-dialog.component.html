@@ -1,0 +1,17 @@
+<h1 mat-dialog-title>Eliminar elemento</h1>
+<div mat-dialog-content>
+  <p>
+    Esta accion eliminará permanentemente el elemento seleccionado, ¿Desea
+    continuar?
+  </p>
+  <div mat-dialog-actions>
+    <div class="flex flex-row justify-end w-full gap-3">
+      <button mat-stroked-button color="primary" [mat-dialog-close]="false">
+        Cancelar
+      </button>
+      <button mat-stroked-button color="warn" [mat-dialog-close]="true">
+        Elimianr
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Editar servicio</h1>
+<h1 mat-dialog-title>Ver Usuario</h1>
 <div mat-dialog-content>
   <div class="w-full flex justify-center">
     <div class="flex flex-col max-w-[432px] w-full">
@@ -13,10 +13,13 @@
         <h3>Nombre: {{ data.name }}</h3>
         <h3>Telefono: {{ data.phone }}</h3>
         <h3>Email {{ data.email }}</h3>
-        <h3>Rol: {{ data.role }}</h3>
+        <h3>Rol: {{ data.role == "admin" ? "Administrador" : "Gestor" }}</h3>
+        <h3>Baneado: {{ data.baned ? "Si" : "No" }}</h3>
         <h3>
-          Baneado: {{ data.baned ? "Si" : "No" }}
+          Requiere cambio de contraseña: {{ data.changePassword ? "Si" : "No" }}
         </h3>
+        <h3>Fecha de creacion {{ data.createDate }}</h3>
+        <h3>Fecha de actualizacion {{ data.updateDate }}</h3>
       </div>
     </div>
   </div>

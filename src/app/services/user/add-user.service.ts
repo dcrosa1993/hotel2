@@ -14,20 +14,16 @@ import { Result } from 'src/app/models/exports';
 import { User } from 'src/app/models/user/user';
 import { UserInput } from 'src/app/models/user/user-input';
 
-import { AccountService } from '../account-service/account.service';
 import { LoggingService } from '../logging/loggin.service';
 import { UserServiceService } from './user-service.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class AddUserService {
   public error$: Observable<string | undefined>;
   public success$: Observable<User | undefined>;
   public loading$: Observable<boolean>;
   public result$: Observable<Result<User>>;
   private submit$: Subject<UserInput> = new Subject();
-  private email!: string;
 
   constructor(
     private service: UserServiceService,

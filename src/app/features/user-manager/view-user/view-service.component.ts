@@ -37,6 +37,7 @@ import { User } from 'src/app/models/user/user';
     BasicCardComponent,
     MatCheckboxModule,
   ],
+  providers: [GetOneUserService],
   templateUrl: './view-service.component.html',
 })
 export class ViewServiceComponent {
@@ -49,9 +50,7 @@ export class ViewServiceComponent {
     private _getOneService: GetOneUserService,
     private dialogRef: MatDialogRef<ViewServiceComponent>,
     @Inject(MAT_DIALOG_DATA) public data: string
-  ) {
-    
-  }
+  ) {}
   ngOnInit(): void {
     this.error$ = this._getOneService.error$;
     this.loading$ = this._getOneService.loading$;

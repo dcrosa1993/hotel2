@@ -17,6 +17,8 @@ import { Observable } from 'rxjs';
 import { BasicCardComponent } from 'src/app/shared/basic-card/basic-card.component';
 
 import { AddUserService } from 'src/app/services/user/add-user.service';
+import { MatSelectModule } from '@angular/material/select';
+import { UserInput } from 'src/app/models/user/user-input';
 @Component({
   selector: 'app-add-service',
   standalone: true,
@@ -31,14 +33,22 @@ import { AddUserService } from 'src/app/services/user/add-user.service';
     MatInputModule,
     BasicCardComponent,
     MatCheckboxModule,
+    MatSelectModule,
   ],
+  providers: [AddUserService],
   templateUrl: './add-user.component.html',
 })
 export class AddUserComponent {
   protected error$!: Observable<string | undefined>;
 
   protected loading$!: Observable<boolean>;
-
+  protected selectElements: {
+    value: 'admin' | 'manager';
+    viewValue: string;
+  }[] = [
+    { value: 'admin', viewValue: 'Administrador' },
+    { value: 'manager', viewValue: 'Gestor' },
+  ];
   public formGroup: FormGroup;
   constructor(
     private _fb: FormBuilder,
@@ -48,9 +58,11 @@ export class AddUserComponent {
     this.formGroup = this._fb.group({
       name: ['', [Validators.required]],
       phone: ['', [Validators.required]],
-      email: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
       baned: [false, [Validators.required]],
-      rol: ['', [Validators.required]],
+      role: [null, [Validators.required]],
+      changePassword: [false, [Validators.required]],
+      password: ['', [Validators.required]],
     });
   }
   ngOnInit(): void {

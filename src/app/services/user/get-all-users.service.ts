@@ -16,9 +16,7 @@ import { User } from 'src/app/models/user/user';
 import { LoggingService } from '../logging/loggin.service';
 import { UserServiceService } from './user-service.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class GetAllUsersService {
   public error$: Observable<string>;
   public loading$: Observable<boolean>;

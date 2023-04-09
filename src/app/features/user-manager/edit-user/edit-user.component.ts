@@ -22,6 +22,7 @@ import { BasicCardComponent } from 'src/app/shared/basic-card/basic-card.compone
 
 import { GetOneUserService } from 'src/app/services/user/get-one-user.service';
 import { EditUserService } from 'src/app/services/user/edit-user.service';
+import { MatSelectModule } from '@angular/material/select';
 @Component({
   selector: 'app-edit-service',
   standalone: true,
@@ -36,14 +37,22 @@ import { EditUserService } from 'src/app/services/user/edit-user.service';
     MatInputModule,
     BasicCardComponent,
     MatCheckboxModule,
+    MatSelectModule,
   ],
+  providers: [GetOneUserService, EditUserService],
   templateUrl: './edit-user.component.html',
 })
 export class EditUserComponent {
   protected error$!: Observable<string | undefined>;
-
+  protected enablePasswordField: boolean = false;
   protected loading$!: Observable<boolean>;
-
+  protected selectElements: {
+    value: 'admin' | 'manager';
+    viewValue: string;
+  }[] = [
+    { value: 'admin', viewValue: 'Administrador' },
+    { value: 'manager', viewValue: 'Gestor' },
+  ];
   public formGroup: FormGroup;
   constructor(
     private _fb: FormBuilder,
@@ -55,9 +64,11 @@ export class EditUserComponent {
     this.formGroup = this._fb.group({
       name: ['', [Validators.required]],
       phone: ['', [Validators.required]],
-      email: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
       baned: [false, [Validators.required]],
-      role: ['', [Validators.required]],
+      role: [null, [Validators.required]],
+      changePassword: [false, [Validators.required]],
+      password: [''],
     });
     this.formGroup.disable();
   }
@@ -74,15 +85,34 @@ export class EditUserComponent {
         email: _.email,
         baned: _.baned,
         role: _.role,
+        changePassword: _.changePassword,
+        password: '',
       });
       this.formGroup.enable();
+      this.formGroup.get('password')!.disable();
     });
     this._getOneService.getOneServices(this.data);
   }
 
   submit() {
+    if (this.enablePasswordField) {
+      this.formGroup.get('password')!.setValidators([Validators.required]);
+    } else {
+      this.formGroup.get('password')!.removeValidators([Validators.required]);
+      this.formGroup.get('password')!.setValue('');
+    }
+    this.formGroup.get('password')!.updateValueAndValidity();
     if (this.formGroup.valid) {
       this._logic.editService(this.formGroup.value, this.data);
+    } else {
+      this.formGroup.markAllAsTouched();
     }
+  }
+
+  passwordAbility() {
+    this.enablePasswordField = !this.enablePasswordField;
+    this.enablePasswordField
+      ? this.formGroup.get('password')!.enable()
+      : this.formGroup.get('password')!.disable();
   }
 }

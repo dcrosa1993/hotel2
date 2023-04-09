@@ -16,7 +16,7 @@
   </div>
   <div
     class="flex flex-row justify-center w-full"
-    *ngIf="success$ | async as data; else nodata"
+    *ngIf="!(loading$ | async) && (success$ | async) as data"
   >
     <table mat-table [dataSource]="data">
       <ng-container matColumnDef="name">
@@ -70,7 +70,11 @@
                 class="m-0"
               ></mat-icon>
             </button>
-            <button mat-button class="flex justify-center items-center">
+            <button
+              mat-button
+              class="flex justify-center items-center"
+              (click)="delete(element.id)"
+            >
               <mat-icon
                 aria-hidden="false"
                 aria-label="Eliminar"
@@ -86,5 +90,12 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
   </div>
-  <ng-template #nodata><h3>No hay resultados para mostrar</h3></ng-template>
+  <div
+    *ngIf="!(loading$ | async) && !(success$ | async)"
+    class="flex flex-row w-full justify-center items-center font-extrabold"
+  >
+    <h3 class="flex flex-row w-full justify-center items-center font-extrabold">
+      No hay resultados para mostrar
+    </h3>
+  </div>
 </div>

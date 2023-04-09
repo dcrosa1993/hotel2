@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Agregar servicio</h1>
+<h1 mat-dialog-title>Agregar Usuario</h1>
 <div mat-dialog-content>
   <div class="w-full flex justify-center">
     <div class="flex flex-col max-w-[432px] w-full">
@@ -28,7 +28,19 @@
           <mat-error *ngIf="formGroup.get('email')!.getError('required')">
             <span class="ml-[9px]">Email es requerido</span>
           </mat-error>
+          <mat-error *ngIf="formGroup.get('email')!.getError('email')">
+            <span class="ml-[9px]">Formato incorrecto</span>
+          </mat-error>
         </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Contraseña</mat-label>
+          <input type="password" matInput formControlName="password" />
+          <mat-error *ngIf="formGroup.get('password')!.getError('required')">
+            <span class="ml-[9px]">Password es requerido</span>
+          </mat-error>
+        </mat-form-field>
+
         <mat-form-field>
           <mat-label>Telefono</mat-label>
           <input type="text" matInput formControlName="phone" />
@@ -38,13 +50,20 @@
         </mat-form-field>
         <mat-form-field>
           <mat-label>Rol</mat-label>
-          <input type="text" matInput formControlName="rol" />
-          <mat-error *ngIf="formGroup.get('rol')!.getError('required')">
-            <span class="ml-[9px]">Rol es requerido</span>
-          </mat-error>
+          <mat-select formControlName="role">
+            <mat-option
+              *ngFor="let item of selectElements"
+              [value]="item.value"
+            >
+              {{ item.viewValue }}
+            </mat-option>
+          </mat-select>
         </mat-form-field>
 
         <mat-checkbox formControlName="baned">Baneado</mat-checkbox>
+        <mat-checkbox formControlName="changePassword"
+          >Requerir cambio de contraseña</mat-checkbox
+        >
       </form>
     </div>
   </div>
