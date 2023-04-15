@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  url: 'https://api.realtravelservices.com/api/',
+  url: 'https://localhost:44334/api/',
 };
 
 /*

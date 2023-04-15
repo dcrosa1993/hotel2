@@ -76,7 +76,7 @@ export class AddRoomService {
   /** This method begins the registration process of a new committee user
   @param value: SignUpCredials type object, contains the necessary registration data to register a new committee user
   */
-  addUser(value: RoomInput) {
+  addRoom(value: RoomInput) {
     this.submit$.next(value);
   }
 }

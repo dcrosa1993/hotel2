@@ -40,6 +40,7 @@ import { Room } from 'src/app/models/exports';
     MatCheckboxModule,
   ],
   templateUrl: './view-room.component.html',
+  providers:[GetOneRoomService]
 })
 export class ViewRoomComponent {
   protected error$!: Observable<string | undefined>;

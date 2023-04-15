@@ -15,9 +15,7 @@ import { User } from 'src/app/models/user/user';
 
 import { LoggingService } from '../logging/loggin.service';
 import { RoomServiceService } from './room-service.service';
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class GetOneRoomService {
   public error$: Observable<string>;
   public loading$: Observable<boolean>;

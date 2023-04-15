@@ -10,8 +10,7 @@ import {
   Subject,
   tap,
 } from 'rxjs';
-import { Result, Room } from 'src/app/models/exports';
-import { RoomInput } from 'src/app/models/room/romm-input';
+import { Result } from 'src/app/models/exports';
 import { User } from 'src/app/models/user/user';
 import { UserInput } from 'src/app/models/user/user-input';
 
@@ -20,12 +19,12 @@ import { LoggingService } from '../logging/loggin.service';
 import { RoomServiceService } from './room-service.service';
 
 @Injectable()
-export class EditRoomService {
+export class RemoveRoomService {
   public error$: Observable<string | undefined>;
-  public success$: Observable<Room | undefined>;
+  public success$: Observable<boolean | undefined>;
   public loading$: Observable<boolean>;
-  public result$: Observable<Result<Room>>;
-  private submit$: Subject<{ data: RoomInput; id: string }> = new Subject();
+  public result$: Observable<Result<boolean>>;
+  private submit$: Subject<string> = new Subject();
   private email!: string;
 
   constructor(
@@ -34,7 +33,7 @@ export class EditRoomService {
     private _router: Router
   ) {
     this.result$ = this.submit$.pipe(
-      exhaustMap((data) => this.service.editRoom(data)),
+      exhaustMap((data) => this.service.deleteRoom(data)),
       shareReplay(1)
     );
     const [success$, error$] = partition(this.result$, (value) =>
@@ -75,7 +74,7 @@ export class EditRoomService {
   /** This method begins the registration process of a new committee user
   @param value: SignUpCredials type object, contains the necessary registration data to register a new committee user
   */
-  editRoom(value: RoomInput, id: string) {
-    this.submit$.next({ data: value, id: id });
+  deleteRoom(value: string) {
+    this.submit$.next(value);
   }
 }

@@ -13,6 +13,6 @@ export type User = {
   reservations: Reservation;
   createdBy: string;
   updatedBy: string;
-  createDate: string;
-  updateDate: string;
+  createdTime: string;
+  updatedTime: string;
 };

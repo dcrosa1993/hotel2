@@ -8,6 +8,6 @@ export type Room = {
   reservationId: string | null;
   createdBy: string;
   updatedBy: string;
-  createDate: string;
-  updateDate: string;
+  createdTime: string;
+  updatedTime: string;
 };

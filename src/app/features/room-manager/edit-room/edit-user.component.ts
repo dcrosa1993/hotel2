@@ -40,6 +40,7 @@ import { EditRoomService } from 'src/app/services/room/edit-room.service';
     MatCheckboxModule,
   ],
   templateUrl: './edit-room.component.html',
+  providers:[EditRoomService, GetOneRoomService]
 })
 export class EditRoomComponent {
   protected error$!: Observable<string | undefined>;

@@ -17,6 +17,7 @@ import { Observable } from 'rxjs';
 import { BasicCardComponent } from 'src/app/shared/basic-card/basic-card.component';
 
 import { AddUserService } from 'src/app/services/user/add-user.service';
+import { AddRoomService } from 'src/app/services/room/add-room.service';
 @Component({
   selector: 'app-add-service',
   standalone: true,
@@ -33,6 +34,7 @@ import { AddUserService } from 'src/app/services/user/add-user.service';
     MatCheckboxModule,
   ],
   templateUrl: './add-room.component.html',
+  providers:[AddRoomService]
 })
 export class AddRoomComponent {
   protected error$!: Observable<string | undefined>;
@@ -42,7 +44,7 @@ export class AddRoomComponent {
   public formGroup: FormGroup;
   constructor(
     private _fb: FormBuilder,
-    private _logic: AddUserService,
+    private _logic: AddRoomService,
     private dialogRef: MatDialogRef<AddRoomComponent>
   ) {
     this.formGroup = this._fb.group({
@@ -61,7 +63,7 @@ export class AddRoomComponent {
 
   submit() {
     if (this.formGroup.valid) {
-      this._logic.addUser(this.formGroup.value);
+      this._logic.addRoom(this.formGroup.value);
     }
   }
 }

@@ -18,8 +18,8 @@
         <h3>
           Requiere cambio de contraseña: {{ data.changePassword ? "Si" : "No" }}
         </h3>
-        <h3>Fecha de creacion {{ data.createDate }}</h3>
-        <h3>Fecha de actualizacion {{ data.updateDate }}</h3>
+        <h3>Fecha de creacion {{ data.createdTime | date}}</h3>
+        <h3>Fecha de actualizacion {{ data.updatedTime | date}}</h3>
       </div>
     </div>
   </div>
