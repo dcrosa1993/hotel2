@@ -5,7 +5,7 @@ export type Room = {
   number: string;
   capacity: string;
   availability: boolean;
-  reservationId: string | null;
+  reservationId?: string | null;
   createdBy: string;
   updatedBy: string;
   createdTime: string;

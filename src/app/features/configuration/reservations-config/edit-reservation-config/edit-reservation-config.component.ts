@@ -20,7 +20,6 @@ import { MatInputModule } from '@angular/material/input';
 import { Observable, merge } from 'rxjs';
 import { BasicCardComponent } from 'src/app/shared/basic-card/basic-card.component';
 import { GetOneReservationService } from 'src/app/services/reservation/get-one-reservation.service';
-import { EditReservationService } from 'src/app/services/reservation/edit-reservation.service';
 import { GetReservationsConfigService } from 'src/app/services/configuration/get-reservations-config.service';
 import { EditReservationConfigService } from 'src/app/services/configuration/edit-reservation-config.service';
 @Component({
@@ -75,8 +74,6 @@ export class EditReservationConfigComponent {
       this.dialogRef.close(true);
     });
     this._getLogic.success$.subscribe((_) => {
-      console.log(_);
-
       this.formGroup.setValue({
         advanceRequieredNigth: _.advanceRequieredNigth,
         managerPartPerClient: _.managerPartPerClient,

@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
+import jwt_decode from 'jwt-decode';
 import {
   BehaviorSubject,
   catchError,
@@ -12,7 +12,12 @@ import {
   ReplaySubject,
   throwError,
 } from 'rxjs';
-import { Result, SignInCredentials, SignUpCredentials } from 'src/app/models/exports';
+import { LoggedInUser } from 'src/app/models/auth/logged-in-user';
+import {
+  Result,
+  SignInCredentials,
+  SignUpCredentials,
+} from 'src/app/models/exports';
 
 import { environment } from 'src/environments/environment';
 
@@ -22,14 +27,18 @@ import { environment } from 'src/environments/environment';
 export class AccountService {
   private isAuthenticatedController: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
-
   public isAuthenticated$: Observable<boolean> =
     this.isAuthenticatedController.asObservable();
   private url: string = environment.url;
+  public currentUser: LoggedInUser | null = null;
+
   constructor(private _http: HttpClient) {
-    localStorage.getItem('id_token')
-      ? this.isAuthenticatedController.next(true)
-      : this.isAuthenticatedController.next(false);
+    if (localStorage.getItem('id_token')) {
+      this.isAuthenticatedController.next(true);
+      this.getCurrentUser();
+    } else {
+      this.isAuthenticatedController.next(false);
+    }
   }
 
   public signUp(data: SignUpCredentials): Observable<Result<string>> {
@@ -51,7 +60,7 @@ export class AccountService {
     const headers = new HttpHeaders();
     headers.set('Content-Type', 'application/json; charset=utf-8;');
     headers.append('Access-Control-Allow-Origin', '*');
-    return this._http.post(this.url + 'login', data, { headers: headers }).pipe(
+    return this._http.post(this.url + 'Auth', data, { headers: headers }).pipe(
       map((data: any) => {
         localStorage.setItem('id_token', data as string);
         this.isAuthenticatedController.next(true);
@@ -72,6 +81,34 @@ export class AccountService {
         })
     );
     */
+  }
+
+  public getCurrentUser(): Observable<Result<LoggedInUser>> {
+    var user = this.getDecodedAccessToken(
+      localStorage.getItem('id_token') ?? ''
+    );
+    var loggedInUser: LoggedInUser = {
+      email:
+        user[
+          'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'
+        ],
+      name: user[
+        'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
+      ],
+      role: user[
+        'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
+      ],
+    };
+    this.currentUser = loggedInUser;
+    return of({ result: loggedInUser });
+  }
+
+  getDecodedAccessToken(token: string): any {
+    try {
+      return jwt_decode(token);
+    } catch (Error) {
+      return null;
+    }
   }
 
   public signOut(): Observable<Result<string>> {
@@ -282,20 +319,5 @@ export class AccountService {
         this.currentUser = undefined;
       });
   }
-
-  public getCurrentUser(): Observable<CognitoUserFacade | undefined> {
-    return from(
-      Auth.currentAuthenticatedUser()
-        .then((data) => {
-          this.isAuthenticatedController.next(true);
-          this.updateUser();
-          return data as CognitoUserFacade;
-        })
-        .catch(() => {
-          this.isAuthenticatedController.next(false);
-          return undefined;
-        })
-    );
-  }
-  */
+*/
 }

@@ -10,7 +10,6 @@ import { LoadingBarComponent } from 'src/app/shared/loading-bar/loading-bar.comp
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AddReservationComponent } from './add-reservation/add-reservation.component';
-import { EditReservationComponent } from './edit-reservation/edit-reservation.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 @Component({
@@ -51,17 +50,14 @@ export class ReservationManagerComponent {
   ) {}
 
   ngOnInit(): void {
-    this.success$ = this._logic.success$
-    this._logic.success$.subscribe((_)=>{
-      console.log(_);
-      
-    });
+    this.success$ = this._logic.success$;
+    this._logic.success$.subscribe((_) => {});
     this.error$ = this._logic.error$;
     this.loading$ = this._logic.loading$;
-    this.getPetitions();
+    this.getData();
   }
 
-  private getPetitions() {
+  private getData() {
     this._logic.getAllServices();
   }
 
@@ -72,19 +68,7 @@ export class ReservationManagerComponent {
     });
 
     dialogRef.afterClosed().subscribe((_) => {
-      _ && this.getPetitions();
-    });
-  }
-
-  editDialog(id: string) {
-    const dialogRef = this.dialog.open(EditReservationComponent, {
-      //height: '400px',
-      width: '800px',
-      data: id,
-    });
-
-    dialogRef.afterClosed().subscribe((_) => {
-      _ && this.getPetitions();
+      _ && this.getData();
     });
   }
 }

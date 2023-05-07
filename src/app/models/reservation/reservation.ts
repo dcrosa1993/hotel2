@@ -1,5 +1,3 @@
-import { client, Room } from '../exports';
-
 export type Reservation = {
   id: string;
   noClients: string;
@@ -13,10 +11,11 @@ export type Reservation = {
   management: string;
   transport: string;
   advanceManagement: boolean;
-  roomId: string;
+  roomId?: string;
   clientsId: string[];
   createdBy: string;
   updatedBy: string;
   createDate: string;
   updateDate: string;
+  userEmail: string;
 };

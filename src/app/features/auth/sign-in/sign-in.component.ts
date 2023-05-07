@@ -60,8 +60,7 @@ export class SignInComponent {
     this.loading$ = this.signInLogic.loading$;
     this.error$ = this.signInLogic.error$;
     this.signInLogic.success$.subscribe((data) => {
-      console.log(data);
-      this._router.navigate(['/store']);
+      this._router.navigate(['/reservations']);
     });
   }
 

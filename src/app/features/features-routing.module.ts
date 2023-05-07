@@ -7,17 +7,22 @@ import { ReservationsConfigComponent } from './configuration/reservations-config
 import { ReservationManagerComponent } from './reservation-manager/reservation-manager.component';
 import { RoomManagerComponent } from './room-manager/room-manager.component';
 import { UserManagerComponent } from './user-manager/user-manager.component';
+import { UnauthenticatedGuard } from '../guards/unauthenticated.guard';
+import { AdminGuard } from '../guards/admin.guard';
+import { ManagerGuard } from '../guards/manager.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'reservations', pathMatch: 'full' },
   {
     path: 'reservations',
     data: { showMenu: false, showDemo: true },
+    canActivate:[AdminGuard, ManagerGuard],
     component: ReservationManagerComponent,
   },
   {
     path: 'config',
     data: { showMenu: false, showDemo: true },
+    canActivate:[AdminGuard],
     children: [
       {
         path: 'reservation-configuration',
@@ -27,6 +32,7 @@ const routes: Routes = [
   },
   {
     path: 'auth',
+    canActivate:[UnauthenticatedGuard],
     data: { showMenu: false, showDemo: true },
     children: [
       {
@@ -41,6 +47,7 @@ const routes: Routes = [
   },
   {
     path: 'admin',
+    canActivate:[AdminGuard],
     data: { showMenu: true, showDemo: true },
     children: [
       {

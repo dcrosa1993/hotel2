@@ -41,13 +41,13 @@ export class ReservationsConfigComponent {
     this.success$ = this._logic.success$;
     this.error$ = this._logic.error$;
     this.loading$ = this._logic.loading$;
-    this.getPetitions();
+    this.getConfig();
   }
 
-  private getPetitions() {
+  private getConfig() {
     this._logic.getReservationConfig();
   }
-  
+
   editDialog() {
     const dialogRef = this.dialog.open(EditReservationConfigComponent, {
       //height: '400px',
@@ -55,8 +55,7 @@ export class ReservationsConfigComponent {
     });
 
     dialogRef.afterClosed().subscribe((_) => {
-      _ && this.getPetitions();
+      _ && this.getConfig();
     });
   }
-  
 }
