@@ -132,6 +132,15 @@
             <span class="ml-[9px]">Costo de transportacion</span>
           </mat-error>
         </mat-form-field>
+        <mat-form-field>
+          <mat-label>Parte de los gestores por cliente</mat-label>
+          <input type="text" matInput formControlName="managerPartPerClient" />
+          <mat-error
+            *ngIf="formGroup.get('managerPartPerClient')!.getError('required')"
+          >
+            <span class="ml-[9px]">Costo de transportacion</span>
+          </mat-error>
+        </mat-form-field>
       </form>
     </div>
   </div>

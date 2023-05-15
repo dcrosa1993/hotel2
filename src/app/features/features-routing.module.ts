@@ -16,13 +16,13 @@ const routes: Routes = [
   {
     path: 'reservations',
     data: { showMenu: false, showDemo: true },
-    canActivate:[AdminGuard, ManagerGuard],
+    canActivate: [AdminGuard, ManagerGuard],
     component: ReservationManagerComponent,
   },
   {
     path: 'config',
     data: { showMenu: false, showDemo: true },
-    canActivate:[AdminGuard],
+    canActivate: [AdminGuard],
     children: [
       {
         path: 'reservation-configuration',
@@ -32,22 +32,18 @@ const routes: Routes = [
   },
   {
     path: 'auth',
-    canActivate:[UnauthenticatedGuard],
+    canActivate: [UnauthenticatedGuard],
     data: { showMenu: false, showDemo: true },
     children: [
       {
         path: 'login',
         component: SignInComponent,
       },
-      {
-        path: 'register',
-        component: SignUpComponent,
-      },
     ],
   },
   {
     path: 'admin',
-    canActivate:[AdminGuard],
+    canActivate: [AdminGuard],
     data: { showMenu: true, showDemo: true },
     children: [
       {

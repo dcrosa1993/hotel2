@@ -11,9 +11,9 @@ import {
 } from 'rxjs';
 import { Result, SignInCredentials } from '../models/exports';
 
-
 import { AccountService } from './account-service/account.service';
 import { LoggingService } from './logging/loggin.service';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class SignInService implements OnDestroy {
@@ -25,7 +25,8 @@ export class SignInService implements OnDestroy {
 
   constructor(
     private _accountService: AccountService,
-    private _logger: LoggingService
+    private _logger: LoggingService,
+    private _router: Router
   ) {
     this.result$ = this._submit.pipe(
       exhaustMap((data) => this._accountService.signIn(data)),
@@ -39,6 +40,7 @@ export class SignInService implements OnDestroy {
 
     this.success$ = success$.pipe(
       map((value) => value.result!),
+      tap((_) => this._router.navigate(['/reservations'])),
       shareReplay(1)
     );
 

@@ -45,11 +45,7 @@ export class SignInComponent {
   protected loading$!: Observable<boolean>;
   protected error$!: Observable<string>;
 
-  constructor(
-    private _fb: FormBuilder,
-    private _router: Router,
-    protected signInLogic: SignInService
-  ) {}
+  constructor(private _fb: FormBuilder, protected signInLogic: SignInService) {}
 
   ngOnInit(): void {
     this.formGroup = this._fb.nonNullable.group({
@@ -59,9 +55,6 @@ export class SignInComponent {
 
     this.loading$ = this.signInLogic.loading$;
     this.error$ = this.signInLogic.error$;
-    this.signInLogic.success$.subscribe((data) => {
-      this._router.navigate(['/reservations']);
-    });
   }
 
   submit() {
