@@ -1,0 +1,187 @@
+<h1 mat-dialog-title>Ver Reservacion</h1>
+<div mat-dialog-content>
+  <div class="w-full flex justify-center">
+    <div class="flex flex-col w-full">
+      <app-error-msg
+        *ngIf="!(loading$ | async) && (error$ | async) as error"
+        [error]="error"
+      >
+      </app-error-msg>
+
+      <app-loading-bar *ngIf="loading$ | async"></app-loading-bar>
+      <div class="flex flex-col gap-4" *ngIf="success$ | async as data">
+        <div class="flex items-center justify-center">
+          <hr class="flex-grow border-gray-300" />
+          <h2 class="text-gray-600 text-lg font-semibold mx-4">
+            Datos de Reservacion
+          </h2>
+          <hr class="flex-grow border-gray-300" />
+        </div>
+        <div class="flex flex-row justify-between items-start gap-8">
+          <div class="flex flex-col justify-center items-center">
+            <p><b>Numero de reserva: </b></p>
+            <p>{{ data.id }}</p>
+          </div>
+          <div class="flex flex-col justify-center items-center">
+            <p><b>Fecha de entrada: </b></p>
+            <p>{{ data.dateIn | date }}</p>
+            <p>{{ data.dateIn | date : "hh:mm" }}</p>
+          </div>
+          <div class="flex flex-col justify-center items-center">
+            <p><b>Fecha de salida: </b></p>
+            <p>
+              {{ data.dateOut | date }}
+            </p>
+            <p>{{ data.dateOut | date : "hh:mm" }}</p>
+          </div>
+          <div class="flex flex-col justify-center items-center">
+            <p><b>Noches totales: </b></p>
+            <p>{{ data.totalNights }}</p>
+          </div>
+          <div class="flex flex-col justify-center items-center">
+            <p><b>Noches pagadas: </b></p>
+            <p>{{ data.paymentNights }}</p>
+          </div>
+        </div>
+        <p *ngIf="data.description"><b>Notas: </b>{{ data.description }}</p>
+        <div class="flex items-center justify-center">
+          <hr class="flex-grow border-gray-300" />
+          <h2 class="text-gray-600 text-lg font-semibold mx-4">
+            Datos de facturacion por huesped
+          </h2>
+          <hr class="flex-grow border-gray-300" />
+        </div>
+        <div class="flex flex-row justify-around items-center gap-8">
+          <div class="flex flex-col justify-center items-center">
+            <p><b>Costo de hospedaje: </b></p>
+            <p>$ {{ data.lodgingCostPerClient }}</p>
+          </div>
+          <div class="flex flex-col justify-center items-center">
+            <p><b>Descuento aplicado: </b></p>
+            <p>$ {{ data.discount }}</p>
+          </div>
+          <div class="flex flex-col justify-center items-center">
+            <p><b>Transportacion: </b></p>
+            <p>$ {{ data.transport }}</p>
+          </div>
+          <div class="flex flex-col justify-center items-center">
+            <p><b>Total a pagar por cliente: </b></p>
+            <p>$ {{ data.totalCostPerClient }}</p>
+          </div>
+        </div>
+        <div class="flex flex-row justify-around items-center gap-8">
+          <div class="flex flex-col justify-center items-center">
+            <p><b>Pagado por cliente: </b></p>
+            <p>$ {{ data.totalPaydedPerClient }}</p>
+          </div>
+
+          <div class="flex flex-col justify-center items-center">
+            <p><b>Pendiente por cliente: </b></p>
+            <p>$ {{ data.pendingPerClient }}</p>
+          </div>
+
+          <div class="flex flex-col justify-center items-center">
+            <p><b>Total pagado: </b></p>
+            <p>
+              <b>$ {{ data.totalPayded }}</b>
+            </p>
+          </div>
+
+          <div class="flex flex-col justify-center items-center">
+            <p><b>Pendiente total: </b></p>
+            <p>
+              <b>$ {{ data.totalPending }}</b>
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-center">
+          <hr class="flex-grow border-gray-300" />
+          <h2 class="text-gray-600 text-lg font-semibold mx-4">
+            Relacion de huespedes
+          </h2>
+          <hr class="flex-grow border-gray-300" />
+        </div>
+        <mat-table #table [dataSource]="data.clients">
+          <!--- Note that these columns can be defined in any order.
+                  The actual rendered columns are set as a property on the row definition" -->
+
+          <!-- Position Column -->
+          <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef> Nombre </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              {{ element.name }}
+            </mat-cell>
+          </ng-container>
+
+          <!-- Name Column -->
+          <ng-container matColumnDef="passport">
+            <mat-header-cell *matHeaderCellDef> Pasaporte </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              {{ element.passport }}
+            </mat-cell>
+          </ng-container>
+
+          <!-- Weight Column -->
+          <ng-container matColumnDef="phone">
+            <mat-header-cell *matHeaderCellDef> Telefono </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              {{ element.phone }}
+            </mat-cell>
+          </ng-container>
+
+          <!-- Weight Column -->
+          <ng-container matColumnDef="email">
+            <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              {{ element.email }}
+            </mat-cell>
+          </ng-container>
+
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="age">
+            <mat-header-cell *matHeaderCellDef> Edad </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              {{ element.age == "adult" ? "Adulto" : "Menor" }}
+            </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+        </mat-table>
+        <div class="flex items-center justify-center">
+          <hr class="flex-grow border-gray-300" />
+          <h2 class="text-gray-600 text-lg font-semibold mx-4">
+            Informacion del gestor
+          </h2>
+          <hr class="flex-grow border-gray-300" />
+        </div>
+        <div class="flex flex-row justify-start items-start gap-8">
+          <p><b>Gestor: </b>{{ data.userEmail }}</p>
+          <p>
+            <b>Cobrada por el gestor: </b
+            >{{ data.advanceManagement ? "Si" : "No" }}
+          </p>
+          <p><b>Parte del gestor: </b>{{ data.management }}</p>
+        </div>
+        <div class="flex items-center justify-center">
+          <hr class="flex-grow border-gray-300" />
+          <h2 class="text-gray-600 text-lg font-semibold mx-4">
+            Informacion de auditoria
+          </h2>
+          <hr class="flex-grow border-gray-300" />
+        </div>
+        <div class="flex flex-col justify-start items-start">
+          <p><b>Fecha de creacion: </b>{{ data.createdTime | date }}</p>
+          <p><b>Fecha de actualizacion: </b>{{ data.updatedTime | date }}</p>
+          <p><b>Creado por: </b>{{ data.createdBy }}</p>
+          <p><b>Actualizado por: </b>{{ data.updatedBy }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <div class="flex flex-row justify-end w-full gap-3">
+    <button mat-stroked-button color="primary" mat-dialog-close>Cerrar</button>
+  </div>
+</div>

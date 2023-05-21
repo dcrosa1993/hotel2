@@ -5,6 +5,8 @@ export type Reservation = {
   dateIn: string;
   dateOut: string;
   totalCost: string;
+  totalPayded: string;
+  costPerClient: string;
   discount: string;
   totalNights: string;
   paymentNights: string;
@@ -12,10 +14,15 @@ export type Reservation = {
   transport: string;
   advanceManagement: boolean;
   roomId?: string;
-  clientsId: string[];
+  clients: string[];
   createdBy: string;
   updatedBy: string;
-  createDate: string;
-  updateDate: string;
+  createdTime: string;
+  updatedTime: string;
   userEmail: string;
+  lodgingCostPerClient: string;
+  totalCostPerClient: string;
+  totalPaydedPerClient: string;
+  pendingPerClient: string;
+  totalPending: string;
 };

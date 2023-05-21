@@ -12,7 +12,7 @@ import { RoomInput } from 'src/app/models/room/romm-input';
 @Injectable({
   providedIn: 'root',
 })
-export class RoomServiceService {
+export class RoomService {
   constructor(private _http: HttpClient) {}
   private url: string = environment.url;
 

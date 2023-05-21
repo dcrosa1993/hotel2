@@ -71,7 +71,7 @@ export class GetOneReservationService {
    * This method begins a user's authentication process.
    * @param value SignInCredentials type object, contains email and password data provided by the user.
    */
-  getOneServices(id: string) {
+  getOneReservation(id: string) {
     this._submit.next(id);
   }
 }

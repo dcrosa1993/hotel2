@@ -17,7 +17,7 @@ import { UserInput } from 'src/app/models/user/user-input';
 
 import { AccountService } from '../account-service/account.service';
 import { LoggingService } from '../logging/loggin.service';
-import { RoomServiceService } from './room-service.service';
+import { RoomService } from './room.service';
 
 @Injectable()
 export class EditRoomService {
@@ -29,7 +29,7 @@ export class EditRoomService {
   private email!: string;
 
   constructor(
-    private service: RoomServiceService,
+    private service: RoomService,
     private _loggingService: LoggingService,
     private _router: Router
   ) {

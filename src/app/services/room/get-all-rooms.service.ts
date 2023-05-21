@@ -14,7 +14,7 @@ import { Result, Room } from 'src/app/models/exports';
 import { User } from 'src/app/models/user/user';
 
 import { LoggingService } from '../logging/loggin.service';
-import { RoomServiceService } from './room-service.service';
+import { RoomService } from './room.service';
 
 @Injectable()
 export class GetAllRoomsService {
@@ -25,7 +25,7 @@ export class GetAllRoomsService {
   public success$: Observable<Room[]>;
 
   constructor(
-    private _logic: RoomServiceService,
+    private _logic: RoomService,
     private _logger: LoggingService
   ) {
     this.result$ = this._submit.pipe(

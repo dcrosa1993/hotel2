@@ -89,7 +89,7 @@ export class ReservationService {
       return of({result:reservation})
   }
 */
-  deleteRoom(id: string): Observable<Result<boolean>> {
+  deleteReservation(id: string): Observable<Result<boolean>> {
     const headers = new HttpHeaders();
     headers.set('Content-Type', 'application/json; charset=utf-8;');
     headers.append('Access-Control-Allow-Origin', '*');

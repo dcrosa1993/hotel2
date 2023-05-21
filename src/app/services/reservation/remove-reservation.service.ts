@@ -16,10 +16,10 @@ import { UserInput } from 'src/app/models/user/user-input';
 
 import { AccountService } from '../account-service/account.service';
 import { LoggingService } from '../logging/loggin.service';
-import { RoomService } from './room.service';
+import { ReservationService } from './reservation.service';
 
 @Injectable()
-export class RemoveRoomService {
+export class RemoveReservationService {
   public error$: Observable<string | undefined>;
   public success$: Observable<boolean | undefined>;
   public loading$: Observable<boolean>;
@@ -28,12 +28,12 @@ export class RemoveRoomService {
   private email!: string;
 
   constructor(
-    private service: RoomService,
+    private service: ReservationService,
     private _loggingService: LoggingService,
     private _router: Router
   ) {
     this.result$ = this.submit$.pipe(
-      exhaustMap((data) => this.service.deleteRoom(data)),
+      exhaustMap((data) => this.service.deleteReservation(data)),
       shareReplay(1)
     );
     const [success$, error$] = partition(this.result$, (value) =>
@@ -74,7 +74,7 @@ export class RemoveRoomService {
   /** This method begins the registration process of a new committee user
   @param value: SignUpCredials type object, contains the necessary registration data to register a new committee user
   */
-  deleteRoom(value: string) {
+  deleteReservation(value: string) {
     this.submit$.next(value);
   }
 }
