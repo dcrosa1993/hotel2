@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, of } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Reservation, Result } from 'src/app/models/exports';
 import { reservationInput } from 'src/app/models/reservation/reservation-input';
@@ -27,45 +27,76 @@ export class ReservationService {
         return of({ error: error.error.title });
       })
     );
-    
   }
 
   getOneReservation(id: string): Observable<Result<Reservation>> {
     const headers = new HttpHeaders();
     headers.set('Content-Type', 'application/json; charset=utf-8;');
     headers.append('Access-Control-Allow-Origin', '*');
-    return this._http.get(this.url + 'Reservations/' + id, { headers: headers }).pipe(
-      map((data: any) => {
-        if (!data.error) {
-          return { result: data.success as Reservation };
-        } else {
-          return { error: data.message };
-        }
-      }),
-      catchError((error) => {
-        return of({ error: error.error.title });
+    return this._http
+      .get(this.url + 'Reservations/' + id, { headers: headers })
+      .pipe(
+        map((data: any) => {
+          if (!data.error) {
+            return { result: data.success as Reservation };
+          } else {
+            return { error: data.message };
+          }
+        }),
+        catchError((error) => {
+          return of({ error: error.error.title });
+        })
+      );
+  }
+
+  getPDF(id: string): Observable<Result<boolean>> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json; charset=utf-8',
+      'Access-Control-Allow-Origin': '*',
+      Accept: 'application/pdf',
+    });
+
+    return this._http
+      .get(this.url + 'Reservations/GeneratePDF/' + id, {
+        responseType: 'blob',
+        headers: headers,
       })
-    );
+      .pipe(
+        map((data: any) => {
+          const fileURL = URL.createObjectURL(data);
+          const link = document.createElement('a');
+          link.href = fileURL;
+          link.download = 'reservation.pdf';
+          link.click();
+          URL.revokeObjectURL(fileURL);
+          return { result: true };
+        }),
+        catchError((error) => {
+          return of({ error: error.error.title });
+        })
+      );
   }
 
   addReservation(res: reservationInput): Observable<Result<Reservation>> {
     const headers = new HttpHeaders();
     headers.set('Content-Type', 'application/json; charset=utf-8;');
     headers.append('Access-Control-Allow-Origin', '*');
-    return this._http.post(this.url + 'Reservations', res, { headers: headers }).pipe(
-      map((data: any) => {
-        if (!data.error) {
-          return { result: data.success as Reservation };
-        } else {
-          return { error: data.message };
-        }
-      }),
-      catchError((error) => {
-        return of({ error: error.error.title });
-      })
-    );
+    return this._http
+      .post(this.url + 'Reservations', res, { headers: headers })
+      .pipe(
+        map((data: any) => {
+          if (!data.error) {
+            return { result: data.success as Reservation };
+          } else {
+            return { error: data.message };
+          }
+        }),
+        catchError((error) => {
+          return of({ error: error.error.title });
+        })
+      );
   }
-/*
+  /*
   editReservation(res: {
     data: reservationInput;
     id: string;

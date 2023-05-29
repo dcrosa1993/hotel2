@@ -15,6 +15,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { AlertDialogComponent } from 'src/app/shared/alert-dialog/alert-dialog.component';
 import { RemoveReservationService } from 'src/app/services/reservation/remove-reservation.service';
 import { ViewReservationComponent } from './view-reservation/view-reservation.component';
+import { GetPDFReservationService } from 'src/app/services/reservation/get-pdf-reservation.service';
 @Component({
   selector: 'app-reservation-manager',
   standalone: true,
@@ -30,7 +31,11 @@ import { ViewReservationComponent } from './view-reservation/view-reservation.co
     MatDatepickerModule,
     MatNativeDateModule,
   ],
-  providers: [MatDatepickerModule, MatNativeDateModule, RemoveReservationService],
+  providers: [
+    MatDatepickerModule,
+    MatNativeDateModule,
+    RemoveReservationService,
+  ],
   templateUrl: './reservation-manager.component.html',
 })
 export class ReservationManagerComponent {
@@ -44,20 +49,32 @@ export class ReservationManagerComponent {
     'operations',
   ];
   protected loading$!: Observable<boolean>;
+  protected pdfLoading$!: Observable<boolean>;
   protected error$!: Observable<string | undefined>;
   protected success$!: Observable<Reservation[]>;
 
   constructor(
     private _logic: GetAllReservationService,
-    private _removeReservation:RemoveReservationService,
+    private _getPDF: GetPDFReservationService,
+    private _removeReservation: RemoveReservationService,
+
     protected dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
     this.success$ = this._logic.success$;
-    this.error$ = merge(this._logic.error$, this._removeReservation.error$);
-    this.loading$ = merge(this._logic.loading$, this._removeReservation.loading$);
-    this._removeReservation.success$.subscribe(_=>_&&this.getData())
+    this.error$ = merge(
+      this._logic.error$,
+      this._removeReservation.error$,
+      this._getPDF.error$
+    );
+    this.loading$ = merge(
+      this._logic.loading$,
+      this._removeReservation.loading$
+    );
+    this.pdfLoading$ = this._getPDF.loading$;
+    this._removeReservation.success$.subscribe((_) => _ && this.getData());
+    this._getPDF.success$.subscribe((_) => console.log(_));
     this.getData();
   }
 
@@ -82,6 +99,10 @@ export class ReservationManagerComponent {
       width: 'auto',
       data: id,
     });
+  }
+
+  downloadPDF(id: string) {
+    this._getPDF.getPDF(id);
   }
 
   delete(id: string) {

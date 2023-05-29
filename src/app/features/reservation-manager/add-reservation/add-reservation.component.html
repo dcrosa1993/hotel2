@@ -34,12 +34,20 @@
               matIconSuffix
               [for]="picker"
             ></mat-datepicker-toggle>
-            <mat-date-range-picker #picker></mat-date-range-picker>
+            <mat-date-range-picker
+              #picker
+              [startAt]="minDate"
+            ></mat-date-range-picker>
             <mat-error *ngIf="formGroup.get('dateIn')!.getError('required')">
               <span class="ml-[9px]">Fecha de entrada es requerido</span>
             </mat-error>
             <mat-error *ngIf="formGroup.get('dateOut')!.getError('required')">
               <span class="ml-[9px]">Fecha de salida es requerido</span>
+            </mat-error>
+            <mat-error
+              *ngIf="formGroup.get('dateOut')!.getError('blockedDates')"
+            >
+              Existen fechas bloqueadas en el rango seleccionado.
             </mat-error>
           </mat-form-field>
 

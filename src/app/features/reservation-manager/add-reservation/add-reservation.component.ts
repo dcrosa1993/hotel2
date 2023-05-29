@@ -10,6 +10,8 @@ import {
   MatDateRangePicker,
 } from '@angular/material/datepicker';
 import {
+  AbstractControl,
+  AsyncValidatorFn,
   FormBuilder,
   FormGroup,
   FormsModule,
@@ -51,6 +53,7 @@ export class AddReservationComponent {
   protected loading$!: Observable<boolean>;
   protected error: boolean = false;
   protected errorMessage: string = '';
+  protected minDate: Date = new Date();
 
   public formGroup: FormGroup;
   constructor(
@@ -60,8 +63,8 @@ export class AddReservationComponent {
   ) {
     this.formGroup = this._fb.group({
       description: [''],
-      dateIn: ['', [Validators.required]],
-      dateOut: ['', [Validators.required]],
+      dateIn: ['', [Validators.required], [this.dateRangeValidator([])]],
+      dateOut: ['', [Validators.required], this.dateRangeValidator([])],
       timeIn: ['', [Validators.required]],
       timeOut: [''],
       paidNights: ['', [Validators.required]],
@@ -76,6 +79,34 @@ export class AddReservationComponent {
     });
   }
 
+  disableDates(datesToDisable: Date[]): void {
+    this.formGroup.controls['dateIn'].setValidators(
+      this.dateRangeValidator(datesToDisable)
+    );
+    this.formGroup.controls['dateIn'].setValidators(
+      this.dateRangeValidator(datesToDisable)
+    );
+  }
+
+  dateRangeValidator(datesToDisable: Date[] = []): AsyncValidatorFn {
+    return (control: AbstractControl) => {
+      const startDate = control.value?.start;
+      const endDate = control.value?.end;
+
+      if (startDate && endDate) {
+        const invalidDates = datesToDisable.filter(
+          (date) => date >= startDate && date <= endDate
+        );
+
+        if (invalidDates.length > 0) {
+          return Promise.resolve({ blockedDates: true });
+        }
+      }
+
+      return Promise.resolve(null);
+    };
+  }
+
   submit() {
     if (this.formGroup.valid) {
       if (this.clients.length > 0) {
@@ -87,7 +118,7 @@ export class AddReservationComponent {
           timeOut: this.formGroup.value.timeOut,
           paymentNights: this.formGroup.value.paidNights,
           clients: this.clients,
-          advanceManagement: this.formGroup.value.isCharged
+          advanceManagement: this.formGroup.value.isCharged,
         };
         this._logic.addReservation(newRes);
       } else {
