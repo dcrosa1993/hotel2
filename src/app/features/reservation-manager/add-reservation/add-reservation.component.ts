@@ -16,15 +16,24 @@ import {
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
-import { Observable } from 'rxjs';
+import { Observable, map, merge, take } from 'rxjs';
 import { AddReservationService } from 'src/app/services/reservation/add-reservation.service';
 import { BasicCardComponent } from 'src/app/shared/basic-card/basic-card.component';
-import { MatNativeDateModule } from '@angular/material/core';
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  MatNativeDateModule,
+  NativeDateAdapter,
+} from '@angular/material/core';
 import { AddReservationClientsComponent } from './add-reservation-clients/add-reservation-clients.component';
 import { clientInput, reservationInput } from 'src/app/models/exports';
+import { GetInvalidDatesReservationService } from 'src/app/services/reservation/get-invalid-dates-reservation.service';
+import { CustomDateAdapter } from './custom-date-adapter';
 @Component({
   selector: 'app-add-reservation',
   standalone: true,
@@ -43,7 +52,18 @@ import { clientInput, reservationInput } from 'src/app/models/exports';
     MatNativeDateModule,
     AddReservationClientsComponent,
   ],
-  providers: [MatDatepickerModule, MatNativeDateModule],
+  providers: [
+    CustomDateAdapter,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    {
+      provide: MAT_DATE_FORMATS,
+      useValue: { display: { dateInput: 'DD-MM-YY' } },
+    },
+    { provide: DateAdapter, useClass: CustomDateAdapter },
+    AddReservationService,
+    GetInvalidDatesReservationService,
+  ],
 
   templateUrl: './add-reservation.component.html',
 })
@@ -54,17 +74,19 @@ export class AddReservationComponent {
   protected error: boolean = false;
   protected errorMessage: string = '';
   protected minDate: Date = new Date();
+  private allDisabledDates: Date[] = [];
 
   public formGroup: FormGroup;
   constructor(
     private _fb: FormBuilder,
     private _logic: AddReservationService,
+    private _invalidDates: GetInvalidDatesReservationService,
     private dialogRef: MatDialogRef<AddReservationComponent>
   ) {
     this.formGroup = this._fb.group({
       description: [''],
-      dateIn: ['', [Validators.required], [this.dateRangeValidator([])]],
-      dateOut: ['', [Validators.required], this.dateRangeValidator([])],
+      dateIn: ['', [Validators.required]],
+      dateOut: ['', [Validators.required]],
       timeIn: ['', [Validators.required]],
       timeOut: [''],
       paidNights: ['', [Validators.required]],
@@ -72,59 +94,71 @@ export class AddReservationComponent {
     });
   }
   ngOnInit(): void {
-    this.error$ = this._logic.error$;
-    this.loading$ = this._logic.loading$;
-    this._logic.success$.subscribe((_) => {
+    this.error$ = merge(this._logic.error$, this._invalidDates.error$);
+    this.loading$ = merge(this._logic.loading$, this._invalidDates.loading$);
+    this._logic.success$.pipe(take(1)).subscribe((_) => {
       this.dialogRef.close(true);
     });
+    this._invalidDates.success$.pipe(take(1)).subscribe((dates) => {
+      this.allDisabledDates = dates;
+    });
+    this._invalidDates.getAllInvalidDates();
   }
 
-  disableDates(datesToDisable: Date[]): void {
-    this.formGroup.controls['dateIn'].setValidators(
-      this.dateRangeValidator(datesToDisable)
-    );
-    this.formGroup.controls['dateIn'].setValidators(
-      this.dateRangeValidator(datesToDisable)
-    );
-  }
+  myFilter = (d: Date | null): boolean => {
+    if (d) {
+      if (new Date(d).getTime() < new Date().getTime()) return false;
 
-  dateRangeValidator(datesToDisable: Date[] = []): AsyncValidatorFn {
-    return (control: AbstractControl) => {
-      const startDate = control.value?.start;
-      const endDate = control.value?.end;
+      var arrayTime = this.allDisabledDates.flatMap((x) =>
+        new Date(x).getTime()
+      );
 
-      if (startDate && endDate) {
-        const invalidDates = datesToDisable.filter(
-          (date) => date >= startDate && date <= endDate
-        );
+      return !arrayTime.includes(new Date(d).getTime());
+    }
 
-        if (invalidDates.length > 0) {
-          return Promise.resolve({ blockedDates: true });
-        }
-      }
-
-      return Promise.resolve(null);
-    };
-  }
+    return true;
+  };
 
   submit() {
     if (this.formGroup.valid) {
-      if (this.clients.length > 0) {
-        var newRes: reservationInput = {
-          description: this.formGroup.value.description,
-          dateIn: this.formGroup.value.dateIn,
-          dateOut: this.formGroup.value.dateOut,
-          timeIn: this.formGroup.value.timeIn,
-          timeOut: this.formGroup.value.timeOut,
-          paymentNights: this.formGroup.value.paidNights,
-          clients: this.clients,
-          advanceManagement: this.formGroup.value.isCharged,
-        };
-        this._logic.addReservation(newRes);
+      if (!this.datesOverlapValidator()) {
+        if (this.clients.length > 0) {
+          var newRes: reservationInput = {
+            description: this.formGroup.value.description,
+            dateIn: this.formGroup.value.dateIn,
+            dateOut: this.formGroup.value.dateOut,
+            timeIn: this.formGroup.value.timeIn,
+            timeOut: this.formGroup.value.timeOut,
+            paymentNights: this.formGroup.value.paidNights,
+            clients: this.clients,
+            advanceManagement: this.formGroup.value.isCharged,
+          };
+          this._logic.addReservation(newRes);
+        } else {
+          this.error = true;
+          this.errorMessage = 'La lista de clientes no puede estar vacia';
+        }
       } else {
         this.error = true;
-        this.errorMessage = 'La lista de clientes no puede estar vacia';
+        this.errorMessage =
+          'Las fechas seleccionadas se superponen con fechas deshabilitadas.';
       }
+    } else {
+      this.formGroup.markAllAsTouched();
+    }
+  }
+
+  private datesOverlapValidator(): boolean {
+    const startDate = this.formGroup.value.dateIn;
+    const endDate = this.formGroup.value.dateOut;
+    if (startDate && endDate) {
+      return this.allDisabledDates.some(
+        (date) =>
+          new Date(startDate).getTime() <= new Date(date).getTime() &&
+          new Date(date).getTime() <= new Date(endDate).getTime()
+      );
+    } else {
+      return false;
     }
   }
 }

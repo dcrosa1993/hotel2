@@ -18,9 +18,7 @@ import { AccountService } from '../account-service/account.service';
 import { LoggingService } from '../logging/loggin.service';
 import { ReservationService } from './reservation.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class AddReservationService {
   public error$: Observable<string | undefined>;
   public success$: Observable<Reservation | undefined>;

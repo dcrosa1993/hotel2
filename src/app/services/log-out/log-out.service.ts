@@ -14,9 +14,7 @@ import { Result } from 'src/app/models/exports';
 import { AccountService } from '../account-service/account.service';
 import { LoggingService } from '../logging/loggin.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class LogOutService {
   public error$: Observable<string>;
   public loading$: Observable<boolean>;

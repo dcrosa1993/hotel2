@@ -29,7 +29,11 @@ export class ManagerGuard implements CanActivate {
     if (localStorage.getItem('id_token')) {
       if (this._accountService.currentUser == null)
         return this._router.parseUrl('/auth/login');
-      if (this._accountService.currentUser.role == 'admin') return true;
+      if (
+        this._accountService.currentUser.role == 'manager' ||
+        this._accountService.currentUser.role == 'admin'
+      )
+        return true;
       return this._router.parseUrl('/auth/login');
     } else {
       return this._router.parseUrl('/auth/login');

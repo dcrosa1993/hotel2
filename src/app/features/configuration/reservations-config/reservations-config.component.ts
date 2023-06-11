@@ -26,6 +26,7 @@ import { EditReservationConfigComponent } from './edit-reservation-config/edit-r
     MatDialogModule,
   ],
   templateUrl: './reservations-config.component.html',
+  providers: [GetReservationsConfigService],
 })
 export class ReservationsConfigComponent {
   protected loading$!: Observable<boolean>;

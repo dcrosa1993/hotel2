@@ -18,9 +18,7 @@ import { UserInput } from 'src/app/models/user/user-input';
 import { LoggingService } from '../logging/loggin.service';
 import { RoomService } from './room.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class AddRoomService {
   public error$: Observable<string | undefined>;
   public success$: Observable<Room | undefined>;

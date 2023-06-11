@@ -16,6 +16,8 @@ import { AlertDialogComponent } from 'src/app/shared/alert-dialog/alert-dialog.c
 import { RemoveReservationService } from 'src/app/services/reservation/remove-reservation.service';
 import { ViewReservationComponent } from './view-reservation/view-reservation.component';
 import { GetPDFReservationService } from 'src/app/services/reservation/get-pdf-reservation.service';
+import { AccountService } from 'src/app/services/account-service/account.service';
+import { LoggedInUser } from 'src/app/models/auth/logged-in-user';
 @Component({
   selector: 'app-reservation-manager',
   standalone: true,
@@ -35,6 +37,8 @@ import { GetPDFReservationService } from 'src/app/services/reservation/get-pdf-r
     MatDatepickerModule,
     MatNativeDateModule,
     RemoveReservationService,
+    GetAllReservationService,
+    GetPDFReservationService,
   ],
   templateUrl: './reservation-manager.component.html',
 })
@@ -52,14 +56,17 @@ export class ReservationManagerComponent {
   protected pdfLoading$!: Observable<boolean>;
   protected error$!: Observable<string | undefined>;
   protected success$!: Observable<Reservation[]>;
+  protected currentUser: LoggedInUser | null = null;
 
   constructor(
     private _logic: GetAllReservationService,
     private _getPDF: GetPDFReservationService,
     private _removeReservation: RemoveReservationService,
-
+    private accountLogic: AccountService,
     protected dialog: MatDialog
-  ) {}
+  ) {
+    this.currentUser = accountLogic.currentUser;
+  }
 
   ngOnInit(): void {
     this.success$ = this._logic.success$;

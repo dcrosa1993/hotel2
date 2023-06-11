@@ -43,7 +43,7 @@ import { MatTableModule } from '@angular/material/table';
     MatTableModule,
   ],
   templateUrl: './view-reservation.component.html',
-  providers: [GetOneRoomService],
+  providers: [GetOneRoomService, GetOneReservationService],
 })
 export class ViewReservationComponent {
   protected error$!: Observable<string | undefined>;

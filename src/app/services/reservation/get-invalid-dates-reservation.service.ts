@@ -15,22 +15,20 @@ import { Reservation } from 'src/app/models/reservation/reservation';
 import { LoggingService } from '../logging/loggin.service';
 import { ReservationService } from './reservation.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class GetInvalidDatesReservationService {
   public error$: Observable<string>;
   public loading$: Observable<boolean>;
-  public result$: Observable<Result<Reservation[]>>;
+  public result$: Observable<Result<Date[]>>;
   private _submit: ReplaySubject<void> = new ReplaySubject();
-  public success$: Observable<Reservation[]>;
+  public success$: Observable<Date[]>;
 
   constructor(
     private _logic: ReservationService,
     private _logger: LoggingService
   ) {
     this.result$ = this._submit.pipe(
-      exhaustMap((data) => this._logic.getAllReservations()),
+      exhaustMap((data) => this._logic.getAllInvalidDates()),
       shareReplay(1)
     );
 
@@ -72,7 +70,7 @@ export class GetInvalidDatesReservationService {
    * This method begins a user's authentication process.
    * @param value SignInCredentials type object, contains email and password data provided by the user.
    */
-  getAllServices() {
+  getAllInvalidDates() {
     this._submit.next();
   }
 }

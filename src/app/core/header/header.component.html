@@ -1,18 +1,38 @@
 <div
-  class="flex flex-row justify-between items-center bg-blue-300 w-full h-[100px] px-6"
+  class="flex flex-row justify-between items-center bg-blue-300 w-full h-[100px] px-6 gap-4"
 >
-  <h1>Logo</h1>
-  <button mat-flat-button color="primary" [matMenuTriggerFor]="menu">
-    Demo
-  </button>
+  <img class="w-16 h-16 rounded-xl" src="../../../assets/img/favicon.jpeg" />
+  <div
+    class="flex flex-row gap-3 justify-start w-full"
+    *ngIf="logedIn$ | async"
+  >
+    <button mat-flat-button color="primary" [routerLink]="'/reservations'">
+      Reservaciones
+    </button>
+
+    <button
+      mat-flat-button
+      color="primary"
+      [matMenuTriggerFor]="menu"
+      *ngIf="currentUser?.role === 'admin'"
+    >
+      Cofiguraciones
+    </button>
+    <button
+      mat-flat-button
+      color="primary"
+      *ngIf="currentUser?.role === 'admin'"
+    >
+      Reportes
+    </button>
+  </div>
+
   <mat-menu #menu="matMenu">
-    <a mat-menu-item [routerLink]="'/admin/users'">Users</a>
-    <a mat-menu-item [routerLink]="'/reservations'">Reservaciones</a>
+    <a mat-menu-item [routerLink]="'/admin/users'">Usuarios</a>
     <a mat-menu-item [routerLink]="'/config/reservation-configuration'"
       >Configuracion</a
     >
     <a mat-menu-item [routerLink]="'/admin/rooms'">Habitaciones</a>
-    <a mat-menu-item [routerLink]="'/auth/login'">Login</a>
   </mat-menu>
   <app-sign-out></app-sign-out>
 </div>

@@ -15,11 +15,10 @@ import {
 } from 'rxjs';
 import { Result, SignUpCredentials } from 'src/app/models/exports';
 
-
 import { AccountService } from '../account-service/account.service';
 import { LoggingService } from '../logging/loggin.service';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class SignUpService implements OnDestroy {
   public error$: Observable<string | undefined>;
   public success$: Observable<string | undefined>;

@@ -16,7 +16,7 @@ const routes: Routes = [
   {
     path: 'reservations',
     data: { showMenu: false, showDemo: true },
-    canActivate: [AdminGuard, ManagerGuard],
+    canActivate: [ManagerGuard],
     component: ReservationManagerComponent,
   },
   {

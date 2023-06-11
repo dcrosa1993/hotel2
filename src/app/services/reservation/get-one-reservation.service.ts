@@ -14,9 +14,7 @@ import { Result } from 'src/app/models/exports';
 import { Reservation } from 'src/app/models/reservation/reservation';
 import { LoggingService } from '../logging/loggin.service';
 import { ReservationService } from './reservation.service';
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class GetOneReservationService {
   public error$: Observable<string>;
   public loading$: Observable<boolean>;

@@ -81,6 +81,7 @@
               mat-button
               class="flex justify-center items-center"
               (click)="delete(element.id)"
+              *ngIf="currentUser?.role === 'admin'"
             >
               <mat-icon
                 aria-hidden="false"

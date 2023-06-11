@@ -17,7 +17,10 @@
         >
           <mat-form-field>
             <mat-label>Fecha de entrada y salida</mat-label>
-            <mat-date-range-input [rangePicker]="picker">
+            <mat-date-range-input
+              [rangePicker]="picker"
+              [dateFilter]="myFilter"
+            >
               <input
                 matStartDate
                 placeholder="Fecha de entrada"
@@ -29,7 +32,7 @@
                 formControlName="dateOut"
               />
             </mat-date-range-input>
-            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+            <mat-hint>DD/MM/YYYY – DD/MM/YYYY</mat-hint>
             <mat-datepicker-toggle
               matIconSuffix
               [for]="picker"
@@ -43,11 +46,6 @@
             </mat-error>
             <mat-error *ngIf="formGroup.get('dateOut')!.getError('required')">
               <span class="ml-[9px]">Fecha de salida es requerido</span>
-            </mat-error>
-            <mat-error
-              *ngIf="formGroup.get('dateOut')!.getError('blockedDates')"
-            >
-              Existen fechas bloqueadas en el rango seleccionado.
             </mat-error>
           </mat-form-field>
 

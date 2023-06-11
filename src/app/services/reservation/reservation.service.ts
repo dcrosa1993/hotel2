@@ -29,6 +29,24 @@ export class ReservationService {
     );
   }
 
+  getAllInvalidDates(): Observable<Result<Date[]>> {
+    const headers = new HttpHeaders();
+    headers.set('Content-Type', 'application/json; charset=utf-8;');
+    headers.append('Access-Control-Allow-Origin', '*');
+    return this._http.get(this.url + 'Reservations/GetDatesWithOutDisponibility', { headers: headers }).pipe(
+      map((data: any) => {
+        if (!data.error) {
+          return { result: data.success as Date[] };
+        } else {
+          return { error: data.message };
+        }
+      }),
+      catchError((error) => {
+        return of({ error: error.error.title });
+      })
+    );
+  }
+
   getOneReservation(id: string): Observable<Result<Reservation>> {
     const headers = new HttpHeaders();
     headers.set('Content-Type', 'application/json; charset=utf-8;');

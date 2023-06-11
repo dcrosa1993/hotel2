@@ -14,9 +14,7 @@ import { ReservationConfig } from 'src/app/models/configuration/reservation-conf
 import { Result } from 'src/app/models/exports';
 import { LoggingService } from '../logging/loggin.service';
 import { ReservationsConfigService } from './reservations-config.service';
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class GetReservationsConfigService {
   public error$: Observable<string>;
   public loading$: Observable<boolean>;

@@ -16,9 +16,7 @@ import { LoggingService } from '../logging/loggin.service';
 import { ReservationService } from './reservation.service';
 import { HttpResponse } from '@angular/common/http';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class GetPDFReservationService {
   public error$: Observable<string>;
   public loading$: Observable<boolean>;

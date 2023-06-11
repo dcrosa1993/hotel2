@@ -4,7 +4,10 @@
   class="h-10 w-full mt-2"
   color="primary"
   *ngIf="logedIn$ | async"
-  (click)="logOut()"
+  [matMenuTriggerFor]="loginMenu"
 >
-  Log Out
+  {{ currentUser?.name }}
 </button>
+<mat-menu #loginMenu="matMenu">
+  <a mat-menu-item (click)="logOut()">Cerrar Sesion</a>
+</mat-menu>

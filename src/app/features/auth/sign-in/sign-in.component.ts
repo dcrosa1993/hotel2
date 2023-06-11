@@ -14,7 +14,7 @@ import {
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterModule } from '@angular/router';
-import { SignInService } from 'src/app/services/sign-in.service';
+import { SignInService } from 'src/app/services/sign-in/sign-in.service';
 import { Observable, startWith } from 'rxjs';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
