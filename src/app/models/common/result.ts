@@ -1,4 +1,4 @@
-export interface Result<T> {
-  result?: T;
+export interface Result<Q> {
+  result?: Q;
   error?: string;
 }

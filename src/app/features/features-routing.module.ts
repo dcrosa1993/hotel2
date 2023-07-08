@@ -10,6 +10,7 @@ import { UserManagerComponent } from './user-manager/user-manager.component';
 import { UnauthenticatedGuard } from '../guards/unauthenticated.guard';
 import { AdminGuard } from '../guards/admin.guard';
 import { ManagerGuard } from '../guards/manager.guard';
+import { ChechInComponent } from './reservation-manager/chech-in/chech-in.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'reservations', pathMatch: 'full' },

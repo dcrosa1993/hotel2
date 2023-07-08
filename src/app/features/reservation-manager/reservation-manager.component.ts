@@ -18,6 +18,11 @@ import { ViewReservationComponent } from './view-reservation/view-reservation.co
 import { GetPDFReservationService } from 'src/app/services/reservation/get-pdf-reservation.service';
 import { AccountService } from 'src/app/services/account-service/account.service';
 import { LoggedInUser } from 'src/app/models/auth/logged-in-user';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import { ChechInComponent } from './chech-in/chech-in.component';
+import { ClientService } from 'src/app/shared/client-service/client.service';
+import { InputRequest } from 'src/app/models/common/input-request';
 @Component({
   selector: 'app-reservation-manager',
   standalone: true,
@@ -32,6 +37,8 @@ import { LoggedInUser } from 'src/app/models/auth/logged-in-user';
     MatDialogModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatInputModule,
+    FormsModule
   ],
   providers: [
     MatDatepickerModule,
@@ -39,6 +46,7 @@ import { LoggedInUser } from 'src/app/models/auth/logged-in-user';
     RemoveReservationService,
     GetAllReservationService,
     GetPDFReservationService,
+    ClientService
   ],
   templateUrl: './reservation-manager.component.html',
 })
@@ -55,17 +63,18 @@ export class ReservationManagerComponent {
   protected loading$!: Observable<boolean>;
   protected pdfLoading$!: Observable<boolean>;
   protected error$!: Observable<string | undefined>;
-  protected success$!: Observable<Reservation[]>;
+  protected success$!: Observable<Reservation[] | undefined>;
   protected currentUser: LoggedInUser | null = null;
+  protected searchValue:string = "";
 
   constructor(
-    private _logic: GetAllReservationService,
+    private _logic: ClientService<{id:string}, Reservation[]>,
     private _getPDF: GetPDFReservationService,
     private _removeReservation: RemoveReservationService,
     private accountLogic: AccountService,
     protected dialog: MatDialog
   ) {
-    this.currentUser = accountLogic.currentUser;
+    this.currentUser = this.accountLogic.currentUser;
   }
 
   ngOnInit(): void {
@@ -86,7 +95,12 @@ export class ReservationManagerComponent {
   }
 
   private getData() {
-    this._logic.getAllServices();
+    var data:InputRequest<{id:string}> = {
+      method: 'POST',
+      url: 'https://localhost:44334/api/Reservations',
+      data: {id:this.searchValue}
+    }
+    this._logic.submit(data);
   }
 
   addDialog() {
@@ -100,8 +114,20 @@ export class ReservationManagerComponent {
     });
   }
 
+  search(){
+    this.getData()
+  }
+
   viewDialog(id: string) {
     this.dialog.open(ViewReservationComponent, {
+      //height: '400px',
+      width: 'auto',
+      data: id,
+    });
+  }
+
+  showCheckIn(id: string) {
+    this.dialog.open(ChechInComponent, {
       //height: '400px',
       width: 'auto',
       data: id,

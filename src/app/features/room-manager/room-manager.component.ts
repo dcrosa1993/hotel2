@@ -13,10 +13,12 @@ import { AddRoomComponent } from './add-room/add-room.component';
 import { ViewRoomComponent } from './view-room/view-service.component';
 import { EditRoomComponent } from './edit-room/edit-user.component';
 import { User } from 'src/app/models/user/user';
-import { Room } from 'src/app/models/exports';
+import { Room } from 'src/app/models/models';
 import { GetAllRoomsService } from 'src/app/services/room/get-all-rooms.service';
 import { AlertDialogComponent } from 'src/app/shared/alert-dialog/alert-dialog.component';
 import { RemoveRoomService } from 'src/app/services/room/remove-room.service';
+import { ClientService } from 'src/app/shared/client-service/client.service';
+import { InputRequest } from 'src/app/models/common/input-request';
 
 @Component({
   selector: 'app-store-manager',
@@ -31,7 +33,7 @@ import { RemoveRoomService } from 'src/app/services/room/remove-room.service';
     MatDialogModule,
   ],
   templateUrl: './room-manager.component.html',
-  providers:[RemoveRoomService, GetAllRoomsService]
+  providers:[RemoveRoomService, GetAllRoomsService, ClientService]
 })
 export class RoomManagerComponent {
   protected displayedColumns: string[] = [
@@ -43,10 +45,10 @@ export class RoomManagerComponent {
   ];
   protected loading$!: Observable<boolean>;
   protected error$!: Observable<string | undefined>;
-  protected success$!: Observable<Room[]>;
+  protected success$!: Observable<Room[] | undefined>;
 
   constructor(
-    private _logic: GetAllRoomsService,
+    private _logic: ClientService<null,Room[]>,
     private _removeRoom: RemoveRoomService,
     protected dialog: MatDialog
   ) {}
@@ -60,7 +62,11 @@ export class RoomManagerComponent {
   }
 
   private getRooms() {
-    this._logic.getAllRooms();
+    var data:InputRequest<null> = {
+      method: 'GET',
+      url: 'https://localhost:44334/api/Room',
+    }
+    this._logic.submit(data);
   }
 
   addDialog() {
