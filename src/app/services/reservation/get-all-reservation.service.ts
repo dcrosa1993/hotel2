@@ -20,7 +20,7 @@ export class GetAllReservationService {
   public error$: Observable<string>;
   public loading$: Observable<boolean>;
   public result$: Observable<Result<Reservation[]>>;
-  private _submit: ReplaySubject<string> = new ReplaySubject();
+  private _submit: ReplaySubject<void> = new ReplaySubject();
   public success$: Observable<Reservation[]>;
 
   constructor(
@@ -28,8 +28,7 @@ export class GetAllReservationService {
     private _logger: LoggingService
   ) {
     this.result$ = this._submit.pipe(
-
-      exhaustMap((data) => this._logic.getAllReservations(data)),
+      exhaustMap((data) => this._logic.getAllReservations()),
       shareReplay(1)
     );
 
@@ -67,7 +66,11 @@ export class GetAllReservationService {
     this._submit.complete();
   }
 
-  getAllReservations(searchValue:string) {
-    this._submit.next(searchValue);
+  /**
+   * This method begins a user's authentication process.
+   * @param value SignInCredentials type object, contains email and password data provided by the user.
+   */
+  getAllServices() {
+    this._submit.next();
   }
 }

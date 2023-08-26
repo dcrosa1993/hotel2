@@ -4,7 +4,6 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Reservation, Result } from 'src/app/models/exports';
 import { reservationInput } from 'src/app/models/reservation/reservation-input';
-import { checkInInput } from 'src/app/models/reservation/check-in-input';
 @Injectable({
   providedIn: 'root',
 })
@@ -12,11 +11,11 @@ export class ReservationService {
   constructor(private _http: HttpClient) {}
   private url: string = environment.url;
 
-  getAllReservations(data:string): Observable<Result<Reservation[]>> {
+  getAllReservations(): Observable<Result<Reservation[]>> {
     const headers = new HttpHeaders();
     headers.set('Content-Type', 'application/json; charset=utf-8;');
     headers.append('Access-Control-Allow-Origin', '*');
-    return this._http.post(this.url + 'Reservations',{id: data}, { headers: headers }).pipe(
+    return this._http.get(this.url + 'Reservations', { headers: headers }).pipe(
       map((data: any) => {
         if (!data.error) {
           return { result: data.success as Reservation[] };
@@ -101,7 +100,7 @@ export class ReservationService {
     headers.set('Content-Type', 'application/json; charset=utf-8;');
     headers.append('Access-Control-Allow-Origin', '*');
     return this._http
-      .post(this.url + 'Reservations/add', res, { headers: headers })
+      .post(this.url + 'Reservations', res, { headers: headers })
       .pipe(
         map((data: any) => {
           if (!data.error) {
@@ -139,30 +138,6 @@ export class ReservationService {
       return of({result:reservation})
   }
 */
-
-  addCheckIn(
-    data: checkInInput
-  ): Observable<Result<Reservation>> {
-    
-    const headers = new HttpHeaders();
-    headers.set('Content-Type', 'application/json; charset=utf-8;');
-    headers.append('Access-Control-Allow-Origin', '*');
-    return this._http
-      .put(this.url + 'Reservations', data, { headers: headers })
-      .pipe(
-        map((data: any) => {
-          if (!data.error) {
-            return { result: data.success as Reservation };
-          } else {
-            return { error: data.message };
-          }
-        }),
-        catchError((error) => {
-          return of({ error: error.error.title });
-        })
-      );
-    }
-
   deleteReservation(id: string): Observable<Result<boolean>> {
     const headers = new HttpHeaders();
     headers.set('Content-Type', 'application/json; charset=utf-8;');

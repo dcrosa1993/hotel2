@@ -25,14 +25,6 @@
     >
       Reportes
     </button>
-    <button
-      mat-flat-button
-      color="primary"
-      *ngIf="currentUser?.role === 'admin'"
-      [routerLink]="'/check-in'"
-    >
-      Check-in
-    </button>
   </div>
 
   <mat-menu #menu="matMenu">

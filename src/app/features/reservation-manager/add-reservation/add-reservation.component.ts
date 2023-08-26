@@ -33,7 +33,7 @@ import {
 import { AddReservationClientsComponent } from './add-reservation-clients/add-reservation-clients.component';
 import { clientInput, reservationInput } from 'src/app/models/exports';
 import { GetInvalidDatesReservationService } from 'src/app/services/reservation/get-invalid-dates-reservation.service';
-import { CustomDateAdapter } from '../../../models/reservation/custom-date-adapter';
+import { CustomDateAdapter } from './custom-date-adapter';
 @Component({
   selector: 'app-add-reservation',
   standalone: true,
